@@ -1,0 +1,16 @@
+VS + Git Repo Automation
+
+TODO
+- Create Empty Bin Project Template for Class Library
+- Create VS Automation library
+	- Create Solution with project based on name and template
+	- Optional test project based on name (convention .Test) and Nunit template
+- Parameterise Automation library
+- Nuspec generation
+- Poshbuild stuff
+- Repo Create/Publish
+- Error Handling
+
+
+ISSUES
+- Test project Nuget package restore not working properly.  Package restores ok but dll reference path not updated.
