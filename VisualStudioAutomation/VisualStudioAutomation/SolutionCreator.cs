@@ -46,7 +46,8 @@ namespace VisualStudioAutomation
 
             if (hasNuspec)
             {
-                // TODO Nuspec stuff
+                var nuspeccreator = new NuspecCreator();
+                nuspeccreator.Create(solutionPath, projectName);
             }
 
             solution.Close(true);

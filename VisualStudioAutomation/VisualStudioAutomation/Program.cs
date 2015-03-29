@@ -7,12 +7,7 @@ namespace VisualStudioAutomation
     {
         static void Main(string[] args)
         {
-
-
-            var nuspeccreator = new NuspecCreator();
-            nuspeccreator.Create();
-            
-            /*
+                       
             if (args == null || args.Length == 0) // todo: also test for help, -h, /?, etc..
             {
                 Console.WriteLine("No arguments specified. Usage: VisualStudioAutomation.exe [solutionName], [solutionLocation]");
@@ -21,15 +16,14 @@ namespace VisualStudioAutomation
             else
             {
                 // todo: better named params
-                var solutionName = args[0] ?? "test-one";
+                var solutionName = args.Length > 0 && !string.IsNullOrEmpty(args[0]) ? args[0] : "test-one";
                 var projectName = solutionName;  // todo: later allow for specifying project name different to solution?
-                var solutionLocation = args[1] ?? @"c:\Temp\TestAutoCreateProject";
+                var solutionLocation = args.Length > 1 && !string.IsNullOrEmpty(args[1]) ? args[1] : @"c:\Temp\TestAutoCreateProject";
                 var solutionPath = string.Format(@"{0}\{1}\", solutionLocation, solutionName);
 
                 var hasTestProject = true;
                 var hasNuspec = true;
 
-                
                 //var templatePath = @"C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\ProjectTemplates\CSharp\Web\Version2012\1033\WebApplicationProject45\WebApplicationProject45.vstemplate";
 
                 Console.WriteLine("Creating solution named: {0}", solutionName);
@@ -40,7 +34,7 @@ namespace VisualStudioAutomation
                 
                 Console.WriteLine("Done creating. Press any key to exit.");
                 Console.ReadKey();    
-            }*/
+            }
         }
     }
 }
