@@ -1,10 +1,5 @@
-﻿using EnvDTE100;
-using EnvDTE80;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using System.IO;
 
 namespace VisualStudioAutomation
 {
@@ -12,18 +7,40 @@ namespace VisualStudioAutomation
     {
         static void Main(string[] args)
         {
-            // reference automation dlls from c:\Program Files (x86)\Common Files\Microsoft Shared\MSEnv\PublicAssemblies\
 
-            Type type = Type.GetTypeFromProgID("VisualStudio.DTE.12.0");  // vs 2013
-            var visualStudio = (DTE2)Activator.CreateInstance(type, true);
 
-            var solution = (Solution4)visualStudio.Solution;
+            var nuspeccreator = new NuspecCreator();
+            nuspeccreator.Create();
+            
+            /*
+            if (args == null || args.Length == 0) // todo: also test for help, -h, /?, etc..
+            {
+                Console.WriteLine("No arguments specified. Usage: VisualStudioAutomation.exe [solutionName], [solutionLocation]");
+                Console.ReadKey();    
+            }
+            else
+            {
+                // todo: better named params
+                var solutionName = args[0] ?? "test-one";
+                var projectName = solutionName;  // todo: later allow for specifying project name different to solution?
+                var solutionLocation = args[1] ?? @"c:\Temp\TestAutoCreateProject";
+                var solutionPath = string.Format(@"{0}\{1}\", solutionLocation, solutionName);
 
-            var template = @"C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\ProjectTemplates\CSharp\Web\Version2012\1033\WebApplicationProject45\WebApplicationProject45.vstemplate";
-            var project = solution.AddFromTemplate(template, @"c:\temp2\newone\", "testproj");
+                var hasTestProject = true;
+                var hasNuspec = true;
 
-            solution.Close(true);
-            visualStudio.Quit();
+                
+                //var templatePath = @"C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\ProjectTemplates\CSharp\Web\Version2012\1033\WebApplicationProject45\WebApplicationProject45.vstemplate";
+
+                Console.WriteLine("Creating solution named: {0}", solutionName);
+                
+                var solutionCreator = new SolutionCreator();
+
+                solutionCreator.Create(solutionPath, projectName, hasTestProject, hasNuspec);
+                
+                Console.WriteLine("Done creating. Press any key to exit.");
+                Console.ReadKey();    
+            }*/
         }
     }
 }
