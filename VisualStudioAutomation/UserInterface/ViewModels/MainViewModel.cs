@@ -19,7 +19,7 @@ namespace UserInterface.ViewModels
            ProjectTemplates = new  ObservableCollection<string>{ "Default Class Library" };
            ProjectTemplate = ProjectTemplates.FirstOrDefault();
 
-           ProjectLocation = @"c:\Temp\TestAutomation\";
+           ProjectLocation = @"c:\Temp2\TestAutomation\";
 
            _solutionCreator = new SolutionCreator();
         }
@@ -72,8 +72,7 @@ namespace UserInterface.ViewModels
 
         public void Create()
         {
-            var solutionPath = ProjectLocation + @"\" + ProjectName + @"\"; // TODO - this should happen in the creator. Not here.
-            _solutionCreator.Create(solutionPath, ProjectName, HasTestProject, HasNuspec);
+            _solutionCreator.Create(ProjectLocation, ProjectName, HasTestProject, HasNuspec);
         }
     }
 }

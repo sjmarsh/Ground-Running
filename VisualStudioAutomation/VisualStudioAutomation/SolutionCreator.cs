@@ -9,10 +9,12 @@ namespace VisualStudioAutomation
 {
     public class SolutionCreator
     {
-        public void Create(string solutionPath, string projectName, bool hasTestProject, bool hasNuspec, string templatePath = null, string testTemplatePath = null)
+        public void Create(string solutionLocation, string projectName, bool hasTestProject, bool hasNuspec, string templatePath = null, string testTemplatePath = null)
         {
             // todo: error handling
             // reference automation dlls from c:\Program Files (x86)\Common Files\Microsoft Shared\MSEnv\PublicAssemblies\
+
+            var solutionPath = string.Format(@"{0}\{1}\", solutionLocation, projectName);
 
             var currentDirectory = Directory.GetCurrentDirectory();
             if (templatePath == null)
@@ -37,10 +39,11 @@ namespace VisualStudioAutomation
                 }
                 
                 var testProjectName = projectName + ".Test";
-                var testProjectPath = solutionPath + @"\" + testProjectName;
+                var testProjectPath = solutionLocation + @"\" + testProjectName;
 
+                
                 // https://msdn.microsoft.com/en-us/library/envdte._solution.addfromtemplate.aspx
-                const bool createNewSolution = false; 
+                const bool createNewSolution = false;
                 var testProject = solution.AddFromTemplate(testTemplatePath, testProjectPath, testProjectName, createNewSolution);
             }
 

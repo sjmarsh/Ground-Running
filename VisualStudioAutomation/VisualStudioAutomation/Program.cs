@@ -18,9 +18,8 @@ namespace VisualStudioAutomation
                 // todo: better named params
                 var solutionName = args.Length > 0 && !string.IsNullOrEmpty(args[0]) ? args[0] : "test-one";
                 var projectName = solutionName;  // todo: later allow for specifying project name different to solution?
-                var solutionLocation = args.Length > 1 && !string.IsNullOrEmpty(args[1]) ? args[1] : @"c:\Temp\TestAutoCreateProject";
-                var solutionPath = string.Format(@"{0}\{1}\", solutionLocation, solutionName);
-
+                var solutionLocation = args.Length > 1 && !string.IsNullOrEmpty(args[1]) ? args[1] : @"c:\Temp2\TestAutoCreateProject";
+                
                 var hasTestProject = true;
                 var hasNuspec = true;
 
@@ -30,7 +29,7 @@ namespace VisualStudioAutomation
                 
                 var solutionCreator = new SolutionCreator();
 
-                solutionCreator.Create(solutionPath, projectName, hasTestProject, hasNuspec);
+                solutionCreator.Create(solutionLocation, projectName, hasTestProject, hasNuspec);
                 
                 Console.WriteLine("Done creating. Press any key to exit.");
                 Console.ReadKey();    

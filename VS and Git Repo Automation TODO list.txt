@@ -13,4 +13,14 @@ TODO
 
 
 ISSUES
+- Folder structure not correct
+  Repo
+    -build
+      -includes
+    -src
+      -Project(folder)
+      -TestProject(folder)
+      -packages(folder)
+      -Solution.sln(file)
+
 - Test project Nuget package restore not working properly.  Package restores ok but dll reference path not updated.
