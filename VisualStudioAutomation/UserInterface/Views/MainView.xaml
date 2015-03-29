@@ -1,0 +1,56 @@
+﻿<Window x:Class="UserInterface.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Project Creator" 
+        Height="330" 
+        Width="600">
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*"></ColumnDefinition>
+                <ColumnDefinition Width="30*"></ColumnDefinition>
+                <ColumnDefinition Width="5*"></ColumnDefinition>
+                <ColumnDefinition Width="70*"></ColumnDefinition>
+                <ColumnDefinition Width="5*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <Label Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right">Project Name:</Label>
+            <TextBox x:Name="ProjectName" Grid.Column="3" Grid.Row="1" Margin="0 0 0 2" HorizontalAlignment="Stretch"></TextBox>
+
+            <Label Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right">Project Location/Path:</Label>
+            <TextBox x:Name="ProjectLocation" Grid.Column="3" Grid.Row="2" Margin="0 2 0 0" HorizontalAlignment="Stretch"></TextBox>
+            
+            <Label Grid.Column="1" Grid.Row="4" HorizontalAlignment="Right">Project Template:</Label>
+            <ComboBox x:Name="ProjectTemplates" Grid.Column="3" Grid.Row="4" HorizontalAlignment="Stretch" ItemsSource="{Binding Path=ProjectTemplates, Mode=OneWay}" SelectedValue="{Binding Path=ProjectTemplate}"></ComboBox>
+
+
+            <Label Grid.Column="1" Grid.Row="5" HorizontalAlignment="Right">Add Test Project?</Label>
+            <CheckBox x:Name="HasTestProject" Grid.Column="3" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center"></CheckBox>
+            
+            <Label Grid.Column="1" Grid.Row="6" HorizontalAlignment="Right">Add Nuspec?</Label>
+            <CheckBox x:Name="HasNuspec" Grid.Column="3" Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Center"></CheckBox>
+            
+            <Label Grid.Column="1" Grid.Row="7" HorizontalAlignment="Right">Add PoshBuild?</Label>
+            <CheckBox IsEnabled="False" x:Name="HasPoshBuild" Grid.Column="3" Grid.Row="7" HorizontalAlignment="Left" VerticalAlignment="Center"></CheckBox>
+            
+            <Label Grid.Column="1" Grid.Row="8" HorizontalAlignment="Right">Create Stash Repository?</Label>
+            <CheckBox IsEnabled="False" x:Name="HasStashRepository" Grid.Column="3" Grid.Row="8" HorizontalAlignment="Left" VerticalAlignment="Center"></CheckBox>
+            
+            <Button x:Name="Create" Grid.Column="3" Grid.Row="10" Width="80" HorizontalAlignment="Right">Create</Button>
+        </Grid>
+    </Grid>
+</Window>
