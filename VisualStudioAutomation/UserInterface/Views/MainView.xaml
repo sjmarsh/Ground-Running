@@ -1,10 +1,15 @@
 ﻿<Window x:Class="UserInterface.Views.MainView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:spinner="clr-namespace:UserInterface.UserControls"
+        xmlns:converters="clr-namespace:UserInterface.Converters"
         Title="Project Creator" 
         Height="330" 
         Width="600">
-    <Grid>
+    <Window.Resources>
+        <converters:BooleanToVisabilityConverter x:Key="booleanToVisibilityConverter"/>
+    </Window.Resources> 
+    <Grid>      
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"></ColumnDefinition>
@@ -49,8 +54,15 @@
             
             <Label Grid.Column="1" Grid.Row="8" HorizontalAlignment="Right">Create Stash Repository?</Label>
             <CheckBox IsEnabled="False" x:Name="HasStashRepository" Grid.Column="3" Grid.Row="8" HorizontalAlignment="Left" VerticalAlignment="Center"></CheckBox>
+
+            <StackPanel Grid.Column="3" Grid.Row="10" HorizontalAlignment="Right" FlowDirection="LeftToRight" Orientation="Horizontal">
+                <Button x:Name="Create" Width="80">Create</Button>
+                <Viewbox Width="25" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{ Binding IsCreating, Converter={StaticResource booleanToVisibilityConverter}}">
+                    <spinner:ProgressSpinner />
+                </Viewbox>                
+            </StackPanel>
             
-            <Button x:Name="Create" Grid.Column="3" Grid.Row="10" Width="80" HorizontalAlignment="Right">Create</Button>
+            
         </Grid>
     </Grid>
 </Window>

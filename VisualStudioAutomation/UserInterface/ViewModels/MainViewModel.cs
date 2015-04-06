@@ -21,6 +21,8 @@ namespace UserInterface.ViewModels
 
            ProjectLocation = @"c:\Temp2\TestAutomation\";
 
+           IsCreating = false;
+           
            _solutionCreator = new SolutionCreator();
         }
 
@@ -62,6 +64,20 @@ namespace UserInterface.ViewModels
         public bool HasPoshBuild { get; set; }
         public bool HasStashRepository { get; set; }
 
+        private bool _isCreating;
+        public bool IsCreating 
+        {
+            get
+            {
+                return _isCreating;
+            }
+            set
+            { 
+                _isCreating = value;
+                NotifyOfPropertyChange(() => IsCreating);
+            } 
+        }
+
         public bool CanCreate 
         {
             get
@@ -70,9 +86,12 @@ namespace UserInterface.ViewModels
             } 
         }
 
-        public void Create()
+        public async void Create()
         {
-            _solutionCreator.Create(ProjectLocation, ProjectName, HasTestProject, HasNuspec);
+            Task createProject = _solutionCreator.CreateAsync(ProjectLocation, ProjectName, HasTestProject, HasNuspec);
+            IsCreating = true;
+            await Task.WhenAll(createProject);  // todo - this is still locking the UI thread.  why?
+            IsCreating = false;
         }
     }
 }

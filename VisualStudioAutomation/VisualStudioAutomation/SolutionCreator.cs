@@ -4,12 +4,18 @@ using System.Security.Policy;
 using EnvDTE;
 using EnvDTE100;
 using EnvDTE80;
+using System.Threading.Tasks;
 
 namespace VisualStudioAutomation
 {
     public class SolutionCreator
     {
-        public void Create(string solutionLocation, string projectName, bool hasTestProject, bool hasNuspec, string templatePath = null, string testTemplatePath = null)
+        public async Task CreateAsync(string solutionLocation, string projectName, bool hasTestProject, bool hasNuspec, string templatePath = null, string testTemplatePath = null)
+        {
+            await Task.Run(() => Create(solutionLocation, projectName, hasTestProject, hasNuspec, templatePath, testTemplatePath)); 
+        }
+
+        public int Create(string solutionLocation, string projectName, bool hasTestProject, bool hasNuspec, string templatePath = null, string testTemplatePath = null)
         {
             // todo: error handling
             // reference automation dlls from c:\Program Files (x86)\Common Files\Microsoft Shared\MSEnv\PublicAssemblies\
@@ -58,6 +64,8 @@ namespace VisualStudioAutomation
 
             CleanUpAdditionalFolders(solutionLocation, projectName);
 
+            return 0;
+            // todo: error handling to return 1 or other codes
         }
 
         private void CleanUpAdditionalFolders(string solutionLocation, string projectName)
