@@ -8,7 +8,7 @@ namespace VisualStudioAutomation
         public void Create(string solutionPath, string projectName)
         {
             XmlDocument nuspec = new XmlDocument();
-            nuspec.Load(Directory.GetCurrentDirectory() + @"\Resources\nuspec-template.xml");
+            nuspec.Load(Directory.GetCurrentDirectory() + @"\Resources\Nuspec\nuspec-template.xml");
             
             var id = nuspec.GetElementsByTagName("id")[0];
             var title = nuspec.GetElementsByTagName("title")[0];

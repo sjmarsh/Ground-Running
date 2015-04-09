@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudioAutomation", "VisualStudioAutomation\VisualStudioAutomation.csproj", "{4E64E9A1-E434-4618-A2E4-13AC92D862FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserInterface", "UserInterface\UserInterface.csproj", "{EA9F570C-032C-4F15-AD2D-0860B35973D3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroundRunning.GUI", "GroundRunning.GUI\GroundRunning.GUI.csproj", "{EA9F570C-032C-4F15-AD2D-0860B35973D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoshBuildAutomation", "PoshBuildAutomation\PoshBuildAutomation.csproj", "{EC0E7909-1092-4D88-890F-BFC8416AF722}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{EA9F570C-032C-4F15-AD2D-0860B35973D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA9F570C-032C-4F15-AD2D-0860B35973D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA9F570C-032C-4F15-AD2D-0860B35973D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC0E7909-1092-4D88-890F-BFC8416AF722}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC0E7909-1092-4D88-890F-BFC8416AF722}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC0E7909-1092-4D88-890F-BFC8416AF722}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC0E7909-1092-4D88-890F-BFC8416AF722}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
