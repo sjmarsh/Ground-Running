@@ -20,7 +20,7 @@ namespace VisualStudioAutomation
             // todo: error handling
             // reference automation dlls from c:\Program Files (x86)\Common Files\Microsoft Shared\MSEnv\PublicAssemblies\
 
-            var solutionPath = string.Format(@"{0}\{1}\", solutionLocation, projectName);
+            var solutionPath = string.Format(@"{0}\{1}\{2}\", solutionLocation, "src", projectName);
             
             var currentDirectory = Directory.GetCurrentDirectory();
             if (templatePath == null)
@@ -45,7 +45,7 @@ namespace VisualStudioAutomation
                 }
                 
                 var testProjectName = projectName + ".Test";
-                var testProjectPath = solutionLocation + @"\" + testProjectName;
+                var testProjectPath = solutionLocation + @"\src\" + testProjectName;
 
                 
                 // https://msdn.microsoft.com/en-us/library/envdte._solution.addfromtemplate.aspx
@@ -62,18 +62,18 @@ namespace VisualStudioAutomation
             solution.Close(true);
             visualStudio.Quit();
 
-            CleanUpAdditionalFolders(solutionLocation, projectName);
+            CleanUpAdditionalFolders(solutionLocation);
 
             return 0;
             // todo: error handling to return 1 or other codes
         }
 
-        private void CleanUpAdditionalFolders(string solutionLocation, string projectName)
+        private void CleanUpAdditionalFolders(string solutionLocation)
         {
             // Calling this library from an external program creates an additional folder for some reason. 
             // This is a Work-around to clean up the folders if they exist
-            var rootDir = solutionLocation + @"\..\";
-            var folderToRemove = rootDir + "\\" + projectName;
+            var rootDir = solutionLocation + @"..\";
+            var folderToRemove = rootDir + "\\src";
             var testFolderToRemove = folderToRemove + ".Test";
             
             if(Directory.Exists(folderToRemove))

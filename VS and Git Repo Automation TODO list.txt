@@ -7,7 +7,9 @@ TODO
 	- Optional test project based on name (convention .Test) and Nunit template
 - Parameterise Automation library
 - Nuspec generation
-- Poshbuild stuff
+	- optional params for authors, dependancies, etc.
+- Poshbuild stuff 
+    	- optional web project
 - Repo Create/Publish
 - Error Handling
 
