@@ -1,13 +1,12 @@
-﻿<Application x:Class="UserInterface.App"
+﻿<Application x:Class="GroundRunning.GUI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:UserInterface"
-             >
+             xmlns:gui="clr-namespace:GroundRunning.GUI">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-                    <local:UserInterfaceBootstrapper x:Key="bootstrapper" />
+                    <gui:UserInterfaceBootstrapper x:Key="bootstrapper" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

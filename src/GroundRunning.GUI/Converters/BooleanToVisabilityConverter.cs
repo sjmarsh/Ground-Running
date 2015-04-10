@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace UserInterface.Converters
+namespace GroundRunning.GUI.Converters
 {
     public class BooleanToVisabilityConverter : IValueConverter
     {

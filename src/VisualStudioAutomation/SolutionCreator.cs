@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Security.Policy;
-using EnvDTE;
+using System.Threading.Tasks;
 using EnvDTE100;
 using EnvDTE80;
-using System.Threading.Tasks;
 
 namespace VisualStudioAutomation
 {
@@ -72,7 +70,7 @@ namespace VisualStudioAutomation
         {
             // Calling this library from an external program creates an additional folder for some reason. 
             // This is a Work-around to clean up the folders if they exist
-            var rootDir = solutionLocation + @"..\";
+            var rootDir = solutionLocation + @"\..\";
             var folderToRemove = rootDir + "\\src";
             var testFolderToRemove = folderToRemove + ".Test";
             

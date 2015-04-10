@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroundRunning.GUI", "Ground
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoshBuildAutomation", "PoshBuildAutomation\PoshBuildAutomation.csproj", "{EC0E7909-1092-4D88-890F-BFC8416AF722}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroundRunning", "GroundRunning\GroundRunning.csproj", "{4194F8CE-0FB9-44EE-A1DA-B60D41B0CFC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{EC0E7909-1092-4D88-890F-BFC8416AF722}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC0E7909-1092-4D88-890F-BFC8416AF722}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC0E7909-1092-4D88-890F-BFC8416AF722}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4194F8CE-0FB9-44EE-A1DA-B60D41B0CFC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4194F8CE-0FB9-44EE-A1DA-B60D41B0CFC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4194F8CE-0FB9-44EE-A1DA-B60D41B0CFC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4194F8CE-0FB9-44EE-A1DA-B60D41B0CFC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
