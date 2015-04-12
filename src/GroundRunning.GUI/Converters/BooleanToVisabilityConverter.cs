@@ -13,7 +13,7 @@ namespace UserInterface.Converters
         {
             var boolValue = value as Boolean?;
 
-            return boolValue.HasValue && boolValue.Value == true ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
+            return boolValue.HasValue && boolValue.Value == true ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

@@ -34,7 +34,7 @@ namespace UserInterface.UserControls
 
         private void Start()
         {
-            Mouse.OverrideCursor = Cursors.Wait;
+          //  Mouse.OverrideCursor = Cursors.Wait;
             animationTimer.Tick += HandleAnimationTick;
             animationTimer.Start();
         }
@@ -42,7 +42,7 @@ namespace UserInterface.UserControls
         private void Stop()
         {
             animationTimer.Stop();
-            Mouse.OverrideCursor = Cursors.Arrow;
+        //    Mouse.OverrideCursor = Cursors.Arrow;
             animationTimer.Tick -= HandleAnimationTick;
         }
 
