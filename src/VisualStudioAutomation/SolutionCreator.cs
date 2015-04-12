@@ -70,8 +70,9 @@ namespace VisualStudioAutomation
         {
             // Calling this library from an external program creates an additional folder for some reason. 
             // This is a Work-around to clean up the folders if they exist
-            var rootDir = solutionLocation + @"\..\";
-            var folderToRemove = rootDir + "\\src";
+            var rootDir = solutionLocation + @"\..\..\";
+            var repoName = solutionLocation.Substring(solutionLocation.LastIndexOf("\\"));
+            var folderToRemove = rootDir + "\\" + repoName;
             var testFolderToRemove = folderToRemove + ".Test";
             
             if(Directory.Exists(folderToRemove))

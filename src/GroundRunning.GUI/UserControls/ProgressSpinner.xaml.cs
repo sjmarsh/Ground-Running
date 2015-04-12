@@ -26,6 +26,7 @@ namespace GroundRunning.GUI.UserControls
         private void Start()
         {
             //Mouse.OverrideCursor = Cursors.Wait;
+
             animationTimer.Tick += HandleAnimationTick;
             animationTimer.Start();
         }
@@ -33,7 +34,9 @@ namespace GroundRunning.GUI.UserControls
         private void Stop()
         {
             animationTimer.Stop();
+            
             //Mouse.OverrideCursor = Cursors.Arrow;
+
             animationTimer.Tick -= HandleAnimationTick;
         }
 
