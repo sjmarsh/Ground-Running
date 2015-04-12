@@ -113,6 +113,14 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GroundRunning\GroundRunning.csproj">
+      <Project>{4194f8ce-0fb9-44ee-a1da-b60d41b0cfc7}</Project>
+      <Name>GroundRunning</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoshBuildAutomation\PoshBuildAutomation.csproj">
+      <Project>{ec0e7909-1092-4d88-890f-bfc8416af722}</Project>
+      <Name>PoshBuildAutomation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VisualStudioAutomation\VisualStudioAutomation.csproj">
       <Project>{4e64e9a1-e434-4618-a2e4-13ac92d862fe}</Project>
       <Name>VisualStudioAutomation</Name>

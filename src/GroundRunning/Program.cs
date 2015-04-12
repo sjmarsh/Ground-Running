@@ -32,6 +32,8 @@ namespace GroundRunning
                 automate.With().TestProject();
                 automate.With().Nuspec();
                 automate.With().PoshBuild();
+                automate.StashRepository()
+                            .With().StashProjectKey("TOOL");
 
                 automate.Create();
 

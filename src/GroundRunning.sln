@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoshBuildAutomation", "Posh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroundRunning", "GroundRunning\GroundRunning.csproj", "{4194F8CE-0FB9-44EE-A1DA-B60D41B0CFC7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StashAutomation", "StashAutomation\StashAutomation.csproj", "{E62B6677-4E33-4FD1-B6C1-CBB80C13FF19}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{4194F8CE-0FB9-44EE-A1DA-B60D41B0CFC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4194F8CE-0FB9-44EE-A1DA-B60D41B0CFC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4194F8CE-0FB9-44EE-A1DA-B60D41B0CFC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E62B6677-4E33-4FD1-B6C1-CBB80C13FF19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E62B6677-4E33-4FD1-B6C1-CBB80C13FF19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E62B6677-4E33-4FD1-B6C1-CBB80C13FF19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E62B6677-4E33-4FD1-B6C1-CBB80C13FF19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

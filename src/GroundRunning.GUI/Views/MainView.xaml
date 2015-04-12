@@ -50,11 +50,20 @@
             <CheckBox x:Name="HasNuspec" Grid.Column="3" Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Center"></CheckBox>
             
             <Label Grid.Column="1" Grid.Row="7" HorizontalAlignment="Right">Add PoshBuild?</Label>
-            <CheckBox IsEnabled="False" x:Name="HasPoshBuild" Grid.Column="3" Grid.Row="7" HorizontalAlignment="Left" VerticalAlignment="Center"></CheckBox>
+            <CheckBox x:Name="HasPoshBuild" Grid.Column="3" Grid.Row="7" HorizontalAlignment="Left" VerticalAlignment="Center"></CheckBox>
             
             <Label Grid.Column="1" Grid.Row="8" HorizontalAlignment="Right">Create Stash Repository?</Label>
-            <CheckBox IsEnabled="False" x:Name="HasStashRepository" Grid.Column="3" Grid.Row="8" HorizontalAlignment="Left" VerticalAlignment="Center"></CheckBox>
-
+            <Grid Grid.Column="3" Grid.Row="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="20*"/>
+                    <ColumnDefinition Width="75*"/>
+                </Grid.ColumnDefinitions>
+                <CheckBox Grid.Column="0" x:Name="HasStashRepository"  HorizontalAlignment="Left" VerticalAlignment="Center"></CheckBox>
+                <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="1">Project Key:</Label>
+                <TextBox x:Name="StashProjectKey" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="2"></TextBox>
+            </Grid>
+            
             <StackPanel Grid.Column="3" Grid.Row="10" HorizontalAlignment="Right" FlowDirection="LeftToRight" Orientation="Horizontal">
                 <Button x:Name="Create" Width="80">Create</Button>
                 <Viewbox Width="25" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{ Binding IsCreating, Converter={StaticResource booleanToVisibilityConverter}}">

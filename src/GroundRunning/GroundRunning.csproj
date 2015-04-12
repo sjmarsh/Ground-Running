@@ -53,6 +53,10 @@
       <Project>{ec0e7909-1092-4d88-890f-bfc8416af722}</Project>
       <Name>PoshBuildAutomation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\StashAutomation\StashAutomation.csproj">
+      <Project>{e62b6677-4e33-4fd1-b6c1-cbb80c13ff19}</Project>
+      <Name>StashAutomation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VisualStudioAutomation\VisualStudioAutomation.csproj">
       <Project>{4e64e9a1-e434-4618-a2e4-13ac92d862fe}</Project>
       <Name>VisualStudioAutomation</Name>

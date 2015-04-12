@@ -2,24 +2,31 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
-using VisualStudioAutomation;
 
 namespace GroundRunning.GUI.ViewModels
 {
     public class MainViewModel : PropertyChangedBase
     {
-        private SolutionCreator _solutionCreator;
-
         public MainViewModel()
         {
-           ProjectTemplates = new  ObservableCollection<string>{ "Default Class Library" };
-           ProjectTemplate = ProjectTemplates.FirstOrDefault();
+           InitializeDefaults();
+        }
 
-           ProjectLocation = @"c:\Temp2\TestAutomation\";
+        private void InitializeDefaults()
+        {
+            ProjectTemplates = new ObservableCollection<string> { "Default Class Library" };
+            ProjectTemplate = ProjectTemplates.FirstOrDefault();
 
-           IsCreating = false;
-           
-           _solutionCreator = new SolutionCreator();
+            ProjectName = "My.Project";
+            ProjectLocation = @"c:\Temp2\";
+
+            HasTestProject = true;
+            HasNuspec = true;
+            HasPoshBuild = true;
+            HasStashRepository = true;
+            StashProjectKey = "TOOL";
+
+            IsCreating = false;
         }
 
         public ObservableCollection<string> ProjectTemplates { get; set; }
@@ -58,7 +65,33 @@ namespace GroundRunning.GUI.ViewModels
         public bool HasTestProject { get; set; }
         public bool HasNuspec { get; set; }
         public bool HasPoshBuild { get; set; }
-        public bool HasStashRepository { get; set; }
+
+        private bool _hasStashRepository;
+        public bool HasStashRepository
+        {
+            get
+            {
+                return _hasStashRepository;
+            }
+            set
+            {
+                _hasStashRepository = value;
+                NotifyOfPropertyChange(() => HasStashRepository);
+                NotifyOfPropertyChange(() => CanCreate);
+            }
+        }
+
+        private string _stashProjectKey;
+        public string StashProjectKey
+        {
+            get { return _stashProjectKey; }
+            set
+            {
+                _stashProjectKey = value;
+                NotifyOfPropertyChange(() => StashProjectKey);
+                NotifyOfPropertyChange(() => CanCreate);
+            }
+        }
 
         private bool _isCreating;
         public bool IsCreating 
@@ -78,13 +111,29 @@ namespace GroundRunning.GUI.ViewModels
         {
             get
             { 
-                return !string.IsNullOrEmpty(ProjectName) && !string.IsNullOrEmpty(ProjectLocation);
+                return !string.IsNullOrEmpty(ProjectName) 
+                    && !string.IsNullOrEmpty(ProjectLocation)
+                    && ((HasStashRepository && !string.IsNullOrEmpty(StashProjectKey)) || !HasStashRepository)
+                    && !IsCreating;
             } 
         }
 
         public async void Create()
         {
-            Task createProject = _solutionCreator.CreateAsync(ProjectLocation, ProjectName, HasTestProject, HasNuspec);
+            var automate = new Automate();
+
+            automate.VisualStudioSolution()
+                   .With().ProjectName(ProjectName)
+                   .And().SolutionLocation(ProjectLocation);
+
+            automate.With().TestProject();
+            automate.With().Nuspec();
+            automate.With().PoshBuild();
+            automate.StashRepository()
+                .With().StashProjectKey(StashProjectKey); 
+            
+            Task createProject = automate.CreateAsync();
+
             IsCreating = true;
             await Task.WhenAll(createProject);  // todo - this is still locking the UI thread.  why?
             IsCreating = false;
