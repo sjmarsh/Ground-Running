@@ -1,28 +1,26 @@
 VS + Git Repo Automation
 
 TODO
-- Create Empty Bin Project Template for Class Library
-- Create VS Automation library
+- Create Empty Bin Project Template for Class Library  					(done)
+- Create VS Automation library								(done)
 	- Create Solution with project based on name and template
 	- Optional test project based on name (convention .Test) and Nunit template
-- Parameterise Automation library
-- Nuspec generation
+- Parameterise Automation library							(done)
+- Nuspec generation									(done)
 	- optional params for authors, dependancies, etc.
-- Poshbuild stuff 
+- Poshbuild stuff 									(done)
     	- optional web project
-- Repo Create/Publish
+- Repo Create/Publish									(done)
+
+- Promt for credientials for stash and base64 encode them (or figure out how to get ad credentials)
+- app.config settings for Stash Urls + default templates
+- cliean up batch file for pushing up initial commit to stash
 - Error Handling
 
 
 ISSUES
-- Folder structure not correct
-  Repo
-    -build
-      -includes
-    -src
-      -Project(folder)
-      -TestProject(folder)
-      -packages(folder)
-      -Solution.sln(file)
+------
+- Doesn't name solution file correctly when supplied name has dots in it. eg. My.New.Solution get's named My.sln
 
-- Test project Nuget package restore not working properly.  Package restores ok but dll reference path not updated.
+- Test project Nuget package restore not working properly.  Package restores ok but dll reference path not updated.  (in visual studio only - works fine if runnning .\build in the command line)
+

@@ -17,7 +17,7 @@ namespace GroundRunning.GUI.ViewModels
             ProjectTemplates = new ObservableCollection<string> { "Default Class Library" };
             ProjectTemplate = ProjectTemplates.FirstOrDefault();
 
-            ProjectName = "My.Project";
+            ProjectName = "My-Project";
             ProjectLocation = @"c:\Temp2\";
 
             HasTestProject = true;
