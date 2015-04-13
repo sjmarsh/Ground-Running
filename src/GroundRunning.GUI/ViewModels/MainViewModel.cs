@@ -66,6 +66,8 @@ namespace GroundRunning.GUI.ViewModels
         public bool HasNuspec { get; set; }
         public bool HasPoshBuild { get; set; }
 
+        #region Stash Properties
+        
         private bool _hasStashRepository;
         public bool HasStashRepository
         {
@@ -93,6 +95,44 @@ namespace GroundRunning.GUI.ViewModels
             }
         }
 
+        private string _stashUrl;
+        public string StashUrl
+        {
+            get { return _stashUrl; }
+            set
+            {
+                _stashUrl = value;
+                NotifyOfPropertyChange(() => StashUrl);
+                NotifyOfPropertyChange(() => CanCreate);
+            }
+        }
+
+        private string _stashUserName;
+        public string StashUserName
+        {
+            get { return _stashUserName; }
+            set
+            {
+                _stashUserName = value;
+                NotifyOfPropertyChange(() => StashUserName);
+                NotifyOfPropertyChange(() => CanCreate);
+            }
+        }
+
+        private string _stashPassword;
+        public string StashPassword
+        {
+            get { return _stashPassword; }
+            set
+            {
+                _stashPassword = value;
+                NotifyOfPropertyChange(() => StashPassword);
+                NotifyOfPropertyChange(() => CanCreate);
+            }
+        }
+
+        #endregion
+
         private bool _isCreating;
         public bool IsCreating 
         {
@@ -113,9 +153,20 @@ namespace GroundRunning.GUI.ViewModels
             { 
                 return !string.IsNullOrEmpty(ProjectName) 
                     && !string.IsNullOrEmpty(ProjectLocation)
-                    && ((HasStashRepository && !string.IsNullOrEmpty(StashProjectKey)) || !HasStashRepository)
+                    && HasValidStashDetails()
                     && !IsCreating;
             } 
+        }
+
+        private bool HasValidStashDetails()
+        {
+            return (!HasStashRepository ||
+                   (HasStashRepository && 
+                        !string.IsNullOrEmpty(StashProjectKey) &&
+                        !string.IsNullOrEmpty(StashUrl) &&
+                        !string.IsNullOrEmpty(StashUserName) &&
+                        !string.IsNullOrEmpty(StashPassword)
+                   ));
         }
 
         public async void Create()
