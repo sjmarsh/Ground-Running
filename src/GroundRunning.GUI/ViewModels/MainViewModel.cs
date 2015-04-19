@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using System.Configuration;
 
 namespace GroundRunning.GUI.ViewModels
 {
@@ -16,17 +17,21 @@ namespace GroundRunning.GUI.ViewModels
 
         private void InitializeDefaults()
         {
-            ProjectTemplates = new ObservableCollection<string> { "Default Class Library" };
+            ProjectName = ConfigurationManager.AppSettings["DefaultProjectName"];
+            ProjectLocation = ConfigurationManager.AppSettings["DefaultProjectLocation"];
+
+            ProjectTemplates = new ObservableCollection<string> { ConfigurationManager.AppSettings["DefaultProjectTemplate"] };
             ProjectTemplate = ProjectTemplates.FirstOrDefault();
 
-            ProjectName = "My-Project";
-            ProjectLocation = @"c:\Temp2\";
+            ProjectName = ConfigurationManager.AppSettings["DefaultProjectName"];
+            ProjectLocation = ConfigurationManager.AppSettings["DefaultProjectLocation"];
 
             HasTestProject = true;
             HasNuspec = true;
             HasPoshBuild = true;
             HasStashRepository = true;
-            StashProjectKey = "TOOL";
+            StashProjectKey = ConfigurationManager.AppSettings["DefaultStashProjectKey"];
+            StashUrl = ConfigurationManager.AppSettings["StashUrl"];
 
             IsCreating = false;
         }
@@ -179,12 +184,11 @@ namespace GroundRunning.GUI.ViewModels
                         
             automate.VisualStudioSolution()
                    .With().ProjectName(ProjectName)
-                   .And().SolutionLocation(ProjectLocation);
-
-            automate.With().TestProject();
-            automate.With().Nuspec();
-            automate.With().PoshBuild();
-            automate.StashRepository()
+                   .And().SolutionLocation(ProjectLocation)
+            .Include().TestProject(HasTestProject)
+            .Include().Nuspec(HasNuspec)
+            .Include().PoshBuild(HasPoshBuild)
+            .Include().StashRepository(HasStashRepository)
                 .With().StashProjectKey(StashProjectKey)
                 .With().StashUrl(StashUrl)
                 .With().StashBase64Credentials(GetBase64Credentials()); 

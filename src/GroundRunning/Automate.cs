@@ -38,6 +38,11 @@ namespace GroundRunning
             return this;
         }
 
+        public Automate Include()
+        {
+            return this;
+        }
+
         public Automate With()
         {
             return this;
@@ -71,9 +76,9 @@ namespace GroundRunning
             return this;
         }
 
-        public Automate TestProject()
+        public Automate TestProject(bool hasTestProject = false)
         {
-            _hasTestProject = true;
+            _hasTestProject = hasTestProject;
             return this;
         }
 
@@ -83,21 +88,21 @@ namespace GroundRunning
             return this;
         }
 
-        public Automate Nuspec()
+        public Automate Nuspec(bool hasNuspec = false)
         {
-            _hasNuspec = true;
+            _hasNuspec = hasNuspec;
             return this;
         }
 
-        public Automate PoshBuild()
+        public Automate PoshBuild(bool hasPoshBuild = false)
         {
-            _hasPoshBuild = true;
+            _hasPoshBuild = hasPoshBuild;
             return this;
         }
 
-        public Automate StashRepository()
+        public Automate StashRepository(bool hasStashRepository = false)
         {
-            _hasStashRepository = true;
+            _hasStashRepository = hasStashRepository;
             return this;
         }
 

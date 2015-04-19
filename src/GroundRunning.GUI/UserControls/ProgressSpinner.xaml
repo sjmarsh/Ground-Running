@@ -7,7 +7,7 @@
               Height="Auto" Width="Auto" Background="Transparent"
              IsVisibleChanged="HandleVisibleChanged">
     <Grid x:Name="LayoutRoot" Background="Transparent"
-          ToolTip="Searching...."
+          ToolTip="Please wait...."
           HorizontalAlignment="Center"
           VerticalAlignment="Center">
         <Canvas RenderTransformOrigin="0.5,0.5"
