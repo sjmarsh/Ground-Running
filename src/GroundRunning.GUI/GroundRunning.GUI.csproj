@@ -61,6 +61,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\BooleanToVisabilityConverter.cs" />
+    <Compile Include="Extensions\BindablePasswordBox.cs" />
     <Compile Include="UserControls\ProgressSpinner.xaml.cs">
       <DependentUpon>ProgressSpinner.xaml</DependentUpon>
     </Compile>

@@ -9,27 +9,25 @@ using StashAutomation.Models;
 namespace StashAutomation
 {
     public class RepositoryCreator
-    {
-        // TODO - this is not very secure. get credentials from user or figure out how to get windows auth
-        private const string Base64Credentials = "Base64EncodedCredentialsGoHere"; 
-        // TODO: configurize!
-        private const string StashServer = "StashServerUrlGoesHere";
-        private const string StashApiBaseUrl = @"StashApiBaseUrlGoesHere";
+    {       
         private const string ScmId = "git";
         private readonly WebClient _client;
         
         public RepositoryCreator()
         {
             _client = new WebClient();
-            _client.Headers.Add(HttpRequestHeader.ContentType, "application/json; charset=utf-8");
-            _client.Headers.Add(HttpRequestHeader.Authorization, "Basic " + Base64Credentials);
-
+        
         }
 
         // TODO make this async again
-        public void CreateAsync(string repoName, string stashProjectKey)
+        // TODO Use oAuth instead of Basic Auth
+        public void CreateAsync(string repoName, string stashProjectKey, string stashUrl, string stashBase64Credentials)
         {
-            var createRepoUrl = string.Format("{0}{1}/repos/", StashApiBaseUrl, stashProjectKey);
+            _client.Headers.Add(HttpRequestHeader.ContentType, "application/json; charset=utf-8");
+            _client.Headers.Add(HttpRequestHeader.Authorization, "Basic " + stashBase64Credentials);
+
+            var stashApiBaseUrl = string.Format("http://{0}/rest", stashUrl);
+            var createRepoUrl = string.Format("{0}{1}/repos/", stashApiBaseUrl, stashProjectKey);
             var repository = new Repository{ Name = repoName, ScmId = ScmId };
 
             try
@@ -43,11 +41,11 @@ namespace StashAutomation
             }
         }
        
-        public void Publish(string repoLocation, string repoName, string stashProjectKey)
+        public void Publish(string repoLocation, string repoName, string stashProjectKey, string stashUrl)
         {
             AddGitIgnoresToRepo(repoLocation);
             
-            var repoUrl = string.Format("ssh://git@{0}/{1}/{2}.git", StashServer, stashProjectKey, repoName);
+            var repoUrl = string.Format("ssh://git@{0}/{1}/{2}.git", stashUrl, stashProjectKey, repoName);
 
             var batchCommand = new StringBuilder();
             batchCommand.AppendLine("cd " + repoLocation);

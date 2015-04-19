@@ -14,6 +14,8 @@ namespace GroundRunning
         private string _projectTemplatePath;
         private string _testTemplatePath;
         private string _stashProjectKey;
+        private string _stashUrl;
+        private string _stashBase64Credentials;
         private bool _hasTestProject;
         private bool _hasNuspec;
         private bool _hasPoshBuild;
@@ -22,6 +24,7 @@ namespace GroundRunning
         private readonly SolutionCreator _visualStudioSolutionCreator;
         private readonly PoshBuildCreator _poshBuildCreator;
         private readonly RepositoryCreator _stashRepositoryCreator;
+        
 
         public Automate()
         {
@@ -104,15 +107,22 @@ namespace GroundRunning
             return this;
         }
 
+        public Automate StashUrl(string stashUrl)
+        {
+            _stashUrl = stashUrl;
+            return this;
+        }
+
+        public Automate StashBase64Credentials(string base64Credentials)
+        {
+            _stashBase64Credentials = base64Credentials;
+            return this;
+        }
+
         public void Create()
         {
             var repoFolderPath = CreateRepoFolder(_solutionLocation, _projectName);
             var repoName = GetRepoName(_projectName);
-
-            if (_hasStashRepository)
-            {
-                _stashRepositoryCreator.CreateAsync(repoName, _stashProjectKey);
-            }
 
             _visualStudioSolutionCreator.Create(repoFolderPath, _projectName, _hasTestProject, _hasNuspec, _projectTemplatePath, _testTemplatePath);
             
@@ -123,7 +133,8 @@ namespace GroundRunning
 
             if (_hasStashRepository)
             {
-                _stashRepositoryCreator.Publish(repoFolderPath, repoName, _stashProjectKey);
+                _stashRepositoryCreator.CreateAsync(repoName, _stashProjectKey, _stashUrl, _stashBase64Credentials);
+                _stashRepositoryCreator.Publish(repoFolderPath, repoName, _stashProjectKey, _stashUrl);
             }
         }
 
@@ -133,14 +144,8 @@ namespace GroundRunning
             var repoFolderPath = CreateRepoFolder(_solutionLocation, _projectName);
             var repoName = GetRepoName(_projectName);
 
-            if (_hasStashRepository)
-            {
-                _stashRepositoryCreator.CreateAsync(repoName, _stashProjectKey);
-            }
-
             await _visualStudioSolutionCreator.CreateAsync(repoFolderPath, _projectName, _hasTestProject, _hasNuspec, _projectTemplatePath, _testTemplatePath);
-
-            
+                        
             // TODO make async
             if (_hasPoshBuild)
             {
@@ -149,7 +154,8 @@ namespace GroundRunning
 
             if (_hasStashRepository)
             {
-                _stashRepositoryCreator.Publish(repoFolderPath, repoName, _stashProjectKey);
+                _stashRepositoryCreator.CreateAsync(repoName, _stashProjectKey, _stashUrl, _stashBase64Credentials);
+                _stashRepositoryCreator.Publish(repoFolderPath, repoName, _stashProjectKey, _stashUrl);
             }
 
         }

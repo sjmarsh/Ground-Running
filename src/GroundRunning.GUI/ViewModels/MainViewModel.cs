@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 
@@ -67,7 +69,7 @@ namespace GroundRunning.GUI.ViewModels
         public bool HasPoshBuild { get; set; }
 
         #region Stash Properties
-        
+      
         private bool _hasStashRepository;
         public bool HasStashRepository
         {
@@ -165,14 +167,16 @@ namespace GroundRunning.GUI.ViewModels
                         !string.IsNullOrEmpty(StashProjectKey) &&
                         !string.IsNullOrEmpty(StashUrl) &&
                         !string.IsNullOrEmpty(StashUserName) &&
-                        !string.IsNullOrEmpty(StashPassword)
+                        !string.IsNullOrEmpty(StashPassword) 
                    ));
         }
+
+       
 
         public async void Create()
         {
             var automate = new Automate();
-
+                        
             automate.VisualStudioSolution()
                    .With().ProjectName(ProjectName)
                    .And().SolutionLocation(ProjectLocation);
@@ -181,13 +185,21 @@ namespace GroundRunning.GUI.ViewModels
             automate.With().Nuspec();
             automate.With().PoshBuild();
             automate.StashRepository()
-                .With().StashProjectKey(StashProjectKey); 
+                .With().StashProjectKey(StashProjectKey)
+                .With().StashUrl(StashUrl)
+                .With().StashBase64Credentials(GetBase64Credentials()); 
             
             Task createProject = automate.CreateAsync();
 
             IsCreating = true;
-            await Task.WhenAll(createProject);  // todo - this is still locking the UI thread.  why?
+            await Task.WhenAll(createProject);  
             IsCreating = false;
+        }
+
+        private string GetBase64Credentials()
+        {
+            var credentialFormat = "{0}:{1}";
+            return System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(string.Format(credentialFormat, StashUserName, StashPassword)));
         }
     }
 }
