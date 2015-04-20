@@ -26,7 +26,7 @@ namespace StashAutomation
             _client.Headers.Add(HttpRequestHeader.ContentType, "application/json; charset=utf-8");
             _client.Headers.Add(HttpRequestHeader.Authorization, "Basic " + stashBase64Credentials);
 
-            var stashApiBaseUrl = string.Format("http://{0}/rest", stashUrl);
+            var stashApiBaseUrl = string.Format("http://{0}/rest/api/1.0/projects/", stashUrl);
             var createRepoUrl = string.Format("{0}{1}/repos/", stashApiBaseUrl, stashProjectKey);
             var repository = new Repository{ Name = repoName, ScmId = ScmId };
 
