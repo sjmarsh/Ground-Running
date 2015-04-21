@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using EnvDTE100;
 using EnvDTE80;
+using EnvDTE100;
+using VSLangProj;
+using VslangProj100;
 
 namespace VisualStudioAutomation
 {
@@ -34,8 +36,8 @@ namespace VisualStudioAutomation
 
             var solution = (Solution4)visualStudio.Solution;
             
-            var project = solution.AddFromTemplate(templatePath, solutionPath, projectName);
-            
+            solution.AddFromTemplate(templatePath, solutionPath, projectName);
+                                   
             if (hasTestProject)
             {
                 if (testTemplatePath == null)
@@ -50,7 +52,17 @@ namespace VisualStudioAutomation
                 
                 // https://msdn.microsoft.com/en-us/library/envdte._solution.addfromtemplate.aspx
                 const bool createNewSolution = false;
-                var testProject = solution.AddFromTemplate(testTemplatePath, testProjectPath, testProjectName, createNewSolution);
+                solution.AddFromTemplate(testTemplatePath, testProjectPath, testProjectName, createNewSolution);
+
+
+                // Add project reference to the main project
+                // http://stackoverflow.com/questions/11530281/adding-programmatically-in-c-sharp-a-project-reference-as-opposed-to-an-assembl
+                // http://blogs.msdn.com/b/vbteam/archive/2004/07/14/183403.aspx
+                // NOTE: solution.Projects are not zero based!
+                var proj = solution.Projects.Item(1);
+                var testProj = solution.Projects.Item(2);
+                var vsTestProj = testProj.Object as VSProject;
+                vsTestProj.References.AddProject(proj);
             }
 
             if (hasNuspec)
