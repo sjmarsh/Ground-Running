@@ -12,9 +12,10 @@ TODO
     	- optional web project
 - Repo Create/Publish									(done)
 
-- Promt for credientials for stash and base64 encode them (or figure out how to get ad credentials)
-- app.config settings for Stash Urls + default templates
-- cliean up batch file for pushing up initial commit to stash
+- Promt for credientials for stash and base64 encode them 				(done)
+- Investigate using oAuth and Stash API key (instead of prompting credentials)
+- app.config settings for Stash Urls + default templates				(done)
+- clean up batch file for pushing up initial commit to stash
 - Error Handling
 
 
