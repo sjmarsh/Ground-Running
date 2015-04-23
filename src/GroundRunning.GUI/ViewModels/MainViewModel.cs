@@ -31,7 +31,8 @@ namespace GroundRunning.GUI.ViewModels
             HasPoshBuild = true;
             HasStashRepository = true;
             StashProjectKey = ConfigurationManager.AppSettings["DefaultStashProjectKey"];
-            StashUrl = ConfigurationManager.AppSettings["StashUrl"];
+            StashRepoUrl = ConfigurationManager.AppSettings["StashRepoUrl"];
+            StashPublishUrl = ConfigurationManager.AppSettings["StashPublishUrl"];
 
             IsCreating = false;
         }
@@ -102,14 +103,26 @@ namespace GroundRunning.GUI.ViewModels
             }
         }
 
-        private string _stashUrl;
-        public string StashUrl
+        private string _stashRepoUrl;
+        public string StashRepoUrl
         {
-            get { return _stashUrl; }
+            get { return _stashRepoUrl; }
             set
             {
-                _stashUrl = value;
-                NotifyOfPropertyChange(() => StashUrl);
+                _stashRepoUrl = value;
+                NotifyOfPropertyChange(() => StashRepoUrl);
+                NotifyOfPropertyChange(() => CanCreate);
+            }
+        }
+
+        private string _stashPublishUrl;
+        public string StashPublishUrl
+        {
+            get { return _stashPublishUrl; }
+            set
+            {
+                _stashPublishUrl = value;
+                NotifyOfPropertyChange(() => StashPublishUrl);
                 NotifyOfPropertyChange(() => CanCreate);
             }
         }
@@ -170,7 +183,8 @@ namespace GroundRunning.GUI.ViewModels
             return (!HasStashRepository ||
                    (HasStashRepository && 
                         !string.IsNullOrEmpty(StashProjectKey) &&
-                        !string.IsNullOrEmpty(StashUrl) &&
+                        !string.IsNullOrEmpty(StashRepoUrl) &&
+                        !string.IsNullOrEmpty(StashPublishUrl) &&
                         !string.IsNullOrEmpty(StashUserName) &&
                         !string.IsNullOrEmpty(StashPassword) 
                    ));
@@ -190,7 +204,8 @@ namespace GroundRunning.GUI.ViewModels
             .Include().PoshBuild(HasPoshBuild)
             .Include().StashRepository(HasStashRepository)
                 .With().StashProjectKey(StashProjectKey)
-                .With().StashUrl(StashUrl)
+                .With().StashRepoUrl(StashRepoUrl)
+                .With().StashPublishUrl(StashPublishUrl)
                 .With().StashBase64Credentials(GetBase64Credentials()); 
             
             Task createProject = automate.CreateAsync();
@@ -202,8 +217,8 @@ namespace GroundRunning.GUI.ViewModels
 
         private string GetBase64Credentials()
         {
-            var credentialFormat = "{0}:{1}";
-            return System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(string.Format(credentialFormat, StashUserName, StashPassword)));
+            const string credentialFormat = "{0}:{1}";
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format(credentialFormat, StashUserName, StashPassword)));
         }
     }
 }

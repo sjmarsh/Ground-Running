@@ -14,7 +14,8 @@ namespace GroundRunning
         private string _projectTemplatePath;
         private string _testTemplatePath;
         private string _stashProjectKey;
-        private string _stashUrl;
+        private string _stashRepoUrl;
+        private string _stashPublishUrl;
         private string _stashBase64Credentials;
         private bool _hasTestProject;
         private bool _hasNuspec;
@@ -112,9 +113,15 @@ namespace GroundRunning
             return this;
         }
 
-        public Automate StashUrl(string stashUrl)
+        public Automate StashRepoUrl(string stahRepoUrl)
         {
-            _stashUrl = stashUrl;
+            _stashRepoUrl = stahRepoUrl;
+            return this;
+        }
+
+        public Automate StashPublishUrl(string stahPublishUrl)
+        {
+            _stashPublishUrl = stahPublishUrl;
             return this;
         }
 
@@ -138,8 +145,8 @@ namespace GroundRunning
 
             if (_hasStashRepository)
             {
-                _stashRepositoryCreator.CreateAsync(repoName, _stashProjectKey, _stashUrl, _stashBase64Credentials);
-                _stashRepositoryCreator.Publish(repoFolderPath, repoName, _stashProjectKey, _stashUrl);
+                _stashRepositoryCreator.CreateAsync(repoName, _stashProjectKey, _stashRepoUrl, _stashBase64Credentials);
+                _stashRepositoryCreator.Publish(repoFolderPath, repoName, _stashProjectKey, _stashPublishUrl);
             }
         }
 
@@ -159,8 +166,8 @@ namespace GroundRunning
 
             if (_hasStashRepository)
             {
-                _stashRepositoryCreator.CreateAsync(repoName, _stashProjectKey, _stashUrl, _stashBase64Credentials);
-                _stashRepositoryCreator.Publish(repoFolderPath, repoName, _stashProjectKey, _stashUrl);
+                _stashRepositoryCreator.CreateAsync(repoName, _stashProjectKey, _stashRepoUrl, _stashBase64Credentials);
+                _stashRepositoryCreator.Publish(repoFolderPath, repoName, _stashProjectKey, _stashPublishUrl);
             }
 
         }

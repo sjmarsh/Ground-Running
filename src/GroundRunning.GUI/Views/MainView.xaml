@@ -6,7 +6,7 @@
         xmlns:userControls="clr-namespace:GroundRunning.GUI.UserControls"
         Title="Project Creator" 
         Icon="/GroundRunning.GUI;component/GroundRunning.ico"
-        Height="405" 
+        Height="430" 
         Width="600">
     <Window.Resources>
         <converters:BooleanToVisabilityConverter x:Key="booleanToVisibilityConverter"/>
@@ -21,6 +21,7 @@
                 <ColumnDefinition Width="5*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="25"></RowDefinition>
                 <RowDefinition Height="25"></RowDefinition>
                 <RowDefinition Height="25"></RowDefinition>
                 <RowDefinition Height="25"></RowDefinition>
@@ -62,43 +63,52 @@
             <Grid Grid.Column="3" Grid.Row="8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*"/>
-                    <ColumnDefinition Width="20*"/>
-                    <ColumnDefinition Width="75*"/>
+                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width="70*"/>
                 </Grid.ColumnDefinitions>
                 <CheckBox Grid.Column="0" x:Name="HasStashRepository"  HorizontalAlignment="Left" VerticalAlignment="Center"></CheckBox>
-                <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="1">Stash Url:</Label>
-                <TextBox x:Name="StashUrl" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="2"></TextBox>
+                <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="1">Stash Repo Url:</Label>
+                <TextBox x:Name="StashRepoUrl" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="2"></TextBox>
             </Grid>
             <Grid Grid.Column="3" Grid.Row="9">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*"/>
-                    <ColumnDefinition Width="20*"/>
-                    <ColumnDefinition Width="75*"/>
+                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width="70*"/>
                 </Grid.ColumnDefinitions>
-                <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="1">Project Key:</Label>
-                <TextBox x:Name="StashProjectKey" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="2"></TextBox>
+                <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="1">Stash Publish Url:</Label>
+                <TextBox x:Name="StashPublishUrl" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="2"></TextBox>
             </Grid>
             <Grid Grid.Column="3" Grid.Row="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*"/>
-                    <ColumnDefinition Width="20*"/>
-                    <ColumnDefinition Width="75*"/>
+                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width="70*"/>
                 </Grid.ColumnDefinitions>
-                <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="1">User Name:</Label>
-                <TextBox x:Name="StashUserName" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="2"></TextBox>
+                <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="1">Project Key:</Label>
+                <TextBox x:Name="StashProjectKey" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="2"></TextBox>
             </Grid>
             <Grid Grid.Column="3" Grid.Row="11">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*"/>
-                    <ColumnDefinition Width="20*"/>
-                    <ColumnDefinition Width="75*"/>
+                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width="70*"/>
+                </Grid.ColumnDefinitions>
+                <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="1">User Name:</Label>
+                <TextBox x:Name="StashUserName" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="2"></TextBox>
+            </Grid>
+            <Grid Grid.Column="3" Grid.Row="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width="70*"/>
                 </Grid.ColumnDefinitions>
                 <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="1">Password:</Label>
                 <PasswordBox x:Name="StashPassword" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="2" 
                              extensions:BindablePasswordBox.BindPassword="True" extensions:BindablePasswordBox.BoundPassword="{Binding StashPassword, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
             
-            <StackPanel Grid.Column="3" Grid.Row="13" HorizontalAlignment="Right" FlowDirection="LeftToRight" Orientation="Horizontal">
+            <StackPanel Grid.Column="3" Grid.Row="14" HorizontalAlignment="Right" FlowDirection="LeftToRight" Orientation="Horizontal">
                 <Button x:Name="Create" Width="80">Create</Button>
                 <Viewbox Width="25" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{ Binding IsCreating, Converter={StaticResource booleanToVisibilityConverter}}">
                     <userControls:ProgressSpinner />

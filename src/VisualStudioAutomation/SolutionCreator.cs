@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using EnvDTE80;
 using EnvDTE100;
 using VSLangProj;
-using VslangProj100;
 
 namespace VisualStudioAutomation
 {

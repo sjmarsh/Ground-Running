@@ -41,11 +41,11 @@ namespace StashAutomation
             }
         }
        
-        public void Publish(string repoLocation, string repoName, string stashProjectKey, string stashUrl)
+        public void Publish(string repoLocation, string repoName, string stashProjectKey, string stashPublishUrl)
         {
             AddGitIgnoresToRepo(repoLocation);
             
-            var repoUrl = string.Format("ssh://git@{0}/{1}/{2}.git", stashUrl, stashProjectKey, repoName);
+            var repoUrl = string.Format("ssh://git@{0}/{1}/{2}.git", stashPublishUrl, stashProjectKey, repoName);
 
             var batchCommand = new StringBuilder();
             batchCommand.AppendLine("cd " + repoLocation);
