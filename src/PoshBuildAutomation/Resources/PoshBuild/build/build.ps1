@@ -1,7 +1,6 @@
 Include settings.ps1
 Include includes\commonfunctions.ps1
 Include includes\assemblyinfo.ps1
-Include includes\runtests.ps1
 Include includes\devdeploy.ps1
 Include includes\octopus.ps1
 Include includes\nuget.ps1
@@ -25,6 +24,6 @@ Task Build -depends Bootstrap-NuGetPackages, Build-Solution
 
 Task Install -depends Build, Run-DevPreDeploy, Run-DevPostDeploy
 
-Task Ci -depends Prepare, Bootstrap-NuGetPackages, Build-Solution, Run-Tests, Create-NuGetPackage, Publish-NugetPackage, Create-OctopusRelease
+Task Ci -depends Prepare, Bootstrap-NuGetPackages, Build-Solution Create-NuGetPackage, Publish-NugetPackage, Create-OctopusRelease
 
-Task default -depends Prepare, Build, Run-Tests
+Task default -depends Prepare, Build
