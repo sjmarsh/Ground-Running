@@ -33,6 +33,10 @@ Limitations/Issues
 - Requires user to enter Stash credentials.  
 - Console application "GroundRunning.exe" does not create Stash Repo yet.
 
+Known Issues/Bugs
+-----------------
+- Cannot handle a Project Name with 4 or more dots in it which ends in .Web eg. My.New.Project.Web  
+
 
 Coming Soon (Backlog)
 --------------------

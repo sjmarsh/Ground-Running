@@ -59,7 +59,7 @@ namespace VisualStudioAutomation
                 // NOTE: solution.Projects are not zero based!
                 var proj = solution.Projects.Item(1);
                 var testProj = solution.Projects.Item(2);
-                var vsTestProj = testProj.Object as VSProject;
+                var vsTestProj = testProj.Object as VSProject;  // This does not like project names with 4 or more dots and ending with .Web (eg. My.New.Project.Web)
                 vsTestProj.References.AddProject(proj);
             }
 
