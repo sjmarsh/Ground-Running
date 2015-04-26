@@ -145,31 +145,14 @@ namespace GroundRunning
 
             if (_hasStashRepository)
             {
-                _stashRepositoryCreator.CreateAsync(repoName, _stashProjectKey, _stashRepoUrl, _stashBase64Credentials);
+                _stashRepositoryCreator.Create(repoName, _stashProjectKey, _stashRepoUrl, _stashBase64Credentials);
                 _stashRepositoryCreator.Publish(repoFolderPath, repoName, _stashProjectKey, _stashPublishUrl);
             }
         }
 
         public async Task CreateAsync()
         {
-
-            var repoFolderPath = CreateRepoFolder(_solutionLocation, _projectName);
-            var repoName = GetRepoName(_projectName);
-
-            await _visualStudioSolutionCreator.CreateAsync(repoFolderPath, _projectName, _hasTestProject, _hasNuspec, _projectTemplatePath, _testTemplatePath);
-                        
-            // TODO make async
-            if (_hasPoshBuild)
-            {
-                _poshBuildCreator.Create(repoFolderPath, _projectName);
-            }
-
-            if (_hasStashRepository)
-            {
-                _stashRepositoryCreator.CreateAsync(repoName, _stashProjectKey, _stashRepoUrl, _stashBase64Credentials);
-                _stashRepositoryCreator.Publish(repoFolderPath, repoName, _stashProjectKey, _stashPublishUrl);
-            }
-
+            await Task.Run(() => Create());
         }
 
         private string CreateRepoFolder(string solutionLocation, string projectName)

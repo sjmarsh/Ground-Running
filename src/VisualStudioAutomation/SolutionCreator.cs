@@ -10,11 +10,6 @@ namespace VisualStudioAutomation
 {
     public class SolutionCreator
     {
-        public async Task CreateAsync(string solutionLocation, string projectName, bool hasTestProject, bool hasNuspec, string templatePath = null, string testTemplatePath = null)
-        {
-            await Task.Run(() => Create(solutionLocation, projectName, hasTestProject, hasNuspec, templatePath, testTemplatePath)); 
-        }
-
         public int Create(string solutionLocation, string projectName, bool hasTestProject, bool hasNuspec, string templatePath = null, string testTemplatePath = null)
         {
             // todo: error handling

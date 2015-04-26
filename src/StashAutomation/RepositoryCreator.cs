@@ -19,9 +19,8 @@ namespace StashAutomation
         
         }
 
-        // TODO make this async again
         // TODO Use oAuth instead of Basic Auth
-        public void CreateAsync(string repoName, string stashProjectKey, string stashUrl, string stashBase64Credentials)
+        public void Create(string repoName, string stashProjectKey, string stashUrl, string stashBase64Credentials)
         {
             _client.Headers.Add(HttpRequestHeader.ContentType, "application/json; charset=utf-8");
             _client.Headers.Add(HttpRequestHeader.Authorization, "Basic " + stashBase64Credentials);
