@@ -27,7 +27,7 @@ Configuration
 Limitations/Issues
 ------------------
 - Currently only creates a Class Library project and an NUnit based test project.  Optional templates to come in future versions.
-- No error handling. 
+- Only basic error handling. Error messages are reported in UI.  All others logged to bin\Logs\. 
 - Nuget package restore not working correctly on initial Visual Studio Build after creation.  Poshbuild/command-line build should be OK.  
 - Need to install NUnit Runners  Manually (if you have a test project).
 - Requires user to enter Stash credentials.  
