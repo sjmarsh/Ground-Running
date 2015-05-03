@@ -1,11 +1,20 @@
-﻿using System.IO;
+﻿using NLog;
+using System.IO;
 
 namespace PoshBuildAutomation
 {
     public class PoshBuildCreator
     {
+        private Logger _logger;
+
+        public PoshBuildCreator()
+        {
+            _logger = LogManager.GetCurrentClassLogger();
+        }
+
         public void Create(string solutionLocation, string projectName)
         {
+            _logger.Info("Creating PoshBuild files/folders for {0}", projectName);
             var resourceDirectory = Directory.GetCurrentDirectory() + @"\Resources\PoshBuild";
             DirectoryCopy.Copy(resourceDirectory, solutionLocation);
             
