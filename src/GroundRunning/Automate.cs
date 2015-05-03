@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using NLog;
 using PoshBuildAutomation;
 using StashAutomation;
 using VisualStudioAutomation;
@@ -25,13 +26,16 @@ namespace GroundRunning
         private readonly SolutionCreator _visualStudioSolutionCreator;
         private readonly PoshBuildCreator _poshBuildCreator;
         private readonly RepositoryCreator _stashRepositoryCreator;
-        
+
+        private Logger _logger;
 
         public Automate()
         {
             _visualStudioSolutionCreator = new SolutionCreator();
             _poshBuildCreator = new PoshBuildCreator();
             _stashRepositoryCreator = new RepositoryCreator();
+
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         public Automate VisualStudioSolution()
@@ -133,6 +137,8 @@ namespace GroundRunning
 
         public void Create()
         {
+            _logger.Info("Creating with Solution Location {0} and Project Name {1}", _solutionLocation, _projectName);
+
             var repoFolderPath = CreateRepoFolder(_solutionLocation, _projectName);
             var repoName = GetRepoName(_projectName);
 

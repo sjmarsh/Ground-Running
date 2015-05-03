@@ -28,8 +28,8 @@ namespace GroundRunning.GUI.ViewModels
 
             HasTestProject = true;
             HasNuspec = true;
-            HasPoshBuild = true;
-            HasStashRepository = true;
+            HasPoshBuild = false;
+            HasStashRepository = false;
             StashProjectKey = ConfigurationManager.AppSettings["DefaultStashProjectKey"];
             StashRepoUrl = ConfigurationManager.AppSettings["StashRepoUrl"];
             StashPublishUrl = ConfigurationManager.AppSettings["StashPublishUrl"];
