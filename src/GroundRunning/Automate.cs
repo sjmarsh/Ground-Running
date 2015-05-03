@@ -154,6 +154,8 @@ namespace GroundRunning
                 _stashRepositoryCreator.Create(repoName, _stashProjectKey, _stashRepoUrl, _stashBase64Credentials);
                 _stashRepositoryCreator.Publish(repoFolderPath, repoName, _stashProjectKey, _stashPublishUrl);
             }
+
+            _logger.Info("Finished Creating {0}", _projectName);
         }
 
         public async Task CreateAsync()
