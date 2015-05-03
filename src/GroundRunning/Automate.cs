@@ -141,25 +141,33 @@ namespace GroundRunning
         public AutomationResult Create()
         {
             _logger.Info("Creating with Solution Location {0} and Project Name {1}", _solutionLocation, _projectName);
-            
-            var repoFolderPath = CreateRepoFolder(_solutionLocation, _projectName);
-            var repoName = GetRepoName(_projectName);
 
-            _result.AddResult(_visualStudioSolutionCreator.Create(repoFolderPath, _projectName, _hasTestProject, _hasNuspec, _projectTemplatePath, _testTemplatePath));
-            
-            if (_result.WasSuccessful && _hasPoshBuild)
+            try
             {
-                _result.AddResult(_poshBuildCreator.Create(repoFolderPath, _projectName));
-            }
+                var repoFolderPath = CreateRepoFolder(_solutionLocation, _projectName);
+                var repoName = GetRepoName(_projectName);
 
-            if (_result.WasSuccessful && _hasStashRepository)
-            {
-                _result.AddResult(_stashRepositoryCreator.Create(repoName, _stashProjectKey, _stashRepoUrl, _stashBase64Credentials));
-                
-                if(_result.WasSuccessful)
+                _result.AddResult(_visualStudioSolutionCreator.Create(repoFolderPath, _projectName, _hasTestProject, _hasNuspec, _projectTemplatePath, _testTemplatePath));
+
+                if (_result.WasSuccessful && _hasPoshBuild)
                 {
-                    _result.AddResult(_stashRepositoryCreator.Publish(repoFolderPath, repoName, _stashProjectKey, _stashPublishUrl));
+                    _result.AddResult(_poshBuildCreator.Create(repoFolderPath, _projectName));
                 }
+
+                if (_result.WasSuccessful && _hasStashRepository)
+                {
+                    _result.AddResult(_stashRepositoryCreator.Create(repoName, _stashProjectKey, _stashRepoUrl, _stashBase64Credentials));
+
+                    if (_result.WasSuccessful)
+                    {
+                        _result.AddResult(_stashRepositoryCreator.Publish(repoFolderPath, repoName, _stashProjectKey, _stashPublishUrl));
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                _logger.Error(string.Format("Error occured Creating Solution {0}", _projectName), ex);
+                _result.AddException(ex);
             }
 
             _logger.Info("Finished Creating {0}", _projectName);

@@ -13,10 +13,22 @@ namespace GroundRunning.Common
 
         public bool WasSuccessful 
         { 
-            get { return Exceptions.Any(); } 
+            get { return !Exceptions.Any(); } 
         }
 
         public List<Exception> Exceptions { get; private set; }
+
+        public IEnumerable<string> ErrorMessages 
+        {
+            get
+            {
+                if(!WasSuccessful)
+                {
+                    return Exceptions.Select(e => e.Message);
+                }
+                return null;
+            } 
+        }
 
         public void AddException(Exception exception)
         {

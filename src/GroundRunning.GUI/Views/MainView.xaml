@@ -6,8 +6,10 @@
         xmlns:userControls="clr-namespace:GroundRunning.GUI.UserControls"
         Title="Project Creator" 
         Icon="/GroundRunning.GUI;component/GroundRunning.ico"
-        Height="430" 
-        Width="600">
+        SizeToContent="Height"
+        Height="Auto"
+        Width="600"
+        >
     <Window.Resources>
         <converters:BooleanToVisabilityConverter x:Key="booleanToVisibilityConverter"/>
     </Window.Resources> 
@@ -37,6 +39,7 @@
                 <RowDefinition Height="25"></RowDefinition>
                 <RowDefinition Height="25"></RowDefinition>
                 <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="25"></RowDefinition>
             </Grid.RowDefinitions>
             
@@ -115,7 +118,33 @@
                 </Viewbox>                
             </StackPanel>
             
-            
+            <!-- Error Notifications TODO: templatize-->
+            <Border Grid.Column="1" Grid.Row="16" BorderBrush="Red" BorderThickness="1" Grid.ColumnSpan="3"
+                    Visibility="{ Binding HasErrors, Converter={StaticResource booleanToVisibilityConverter}}">
+                <Grid Grid.Column="1" Grid.Row="16" Background="MistyRose" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="35"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Background="Red" Foreground="White" FontWeight="Bold">Errors</Label>
+                    <ItemsControl Grid.Row="1" x:Name="Errors" Background="MistyRose">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <BulletDecorator Margin="5 5 0 0">
+                                    <BulletDecorator.Bullet>
+                                        <Ellipse Height="5" Width="5" Fill="Black" Margin="0 5 0 5"/>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Margin="5 5 0 0" Text="{Binding ., Mode=OneWay}" Background="MistyRose" />
+                                </BulletDecorator>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Label Grid.Row="2" Margin="0 5 0 0" Background="MistyRose">Check Error Log for more details.</Label>
+                </Grid>
+            </Border>
+
+
         </Grid>
     </Grid>
 </Window>

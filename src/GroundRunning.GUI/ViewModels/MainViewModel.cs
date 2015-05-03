@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using System.Configuration;
+using System.Collections.Generic;
+using GroundRunning.Common;
 
 namespace GroundRunning.GUI.ViewModels
 {
@@ -35,6 +37,7 @@ namespace GroundRunning.GUI.ViewModels
             StashPublishUrl = ConfigurationManager.AppSettings["StashPublishUrl"];
 
             IsCreating = false;
+            Errors = new BindableCollection<string>();
         }
 
         public ObservableCollection<string> ProjectTemplates { get; set; }
@@ -178,6 +181,18 @@ namespace GroundRunning.GUI.ViewModels
             } 
         }
 
+        private BindableCollection<string> _errors;
+        public BindableCollection<string> Errors
+        {
+            get { return _errors; }
+            set {_errors = value; }
+        }
+
+        public bool HasErrors
+        {
+            get { return Errors.Any(); }
+        }
+
         private bool HasValidStashDetails()
         {
             return (!HasStashRepository ||
@@ -190,10 +205,11 @@ namespace GroundRunning.GUI.ViewModels
                    ));
         }
 
-       
-
         public async void Create()
         {
+            Errors.Clear();
+            NotifyOfPropertyChange(() => HasErrors);
+
             var automate = new Automate();
                         
             automate.VisualStudioSolution()
@@ -208,11 +224,17 @@ namespace GroundRunning.GUI.ViewModels
                 .With().StashPublishUrl(StashPublishUrl)
                 .With().StashBase64Credentials(GetBase64Credentials()); 
             
-            Task createProject = automate.CreateAsync();
+            Task<AutomationResult> createProject = automate.CreateAsync();
 
-            IsCreating = true;
-            await Task.WhenAll(createProject);  
+            IsCreating = true;          
+            var result = await createProject;
             IsCreating = false;
+
+            if(!result.WasSuccessful)
+            {
+                Errors.AddRange(result.ErrorMessages);
+                NotifyOfPropertyChange(() => HasErrors);
+            }
         }
 
         private string GetBase64Credentials()

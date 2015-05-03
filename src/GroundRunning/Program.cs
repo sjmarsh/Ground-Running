@@ -37,17 +37,25 @@ namespace GroundRunning
                   .With().ProjectName(solutionName)
                   .And().SolutionLocation(solutionLocation)
                 .Include().TestProject(true)
-                .Include().Nuspec(true)
-                .Include().PoshBuild(true);
+                .Include().Nuspec(true);
+                //.Include().PoshBuild(true);
                 //.Include().StashRepository(false)
                 //    .With().StashProjectKey(stashProjectKey)
                 //    .With().StashUrl(stashRepoUrl)
                 //    .With().StashUrl(stashPublishUrl)
                 //    .With().StashBase64Credentials(GetBase64Credentials()); 
 
-                automate.Create();
+                var result = automate.Create();
 
-                Console.WriteLine("Done creating. Press any key to exit.");
+                if(result.WasSuccessful)
+                {
+                    Console.WriteLine("Done creating. Press any key to exit.");
+                }
+                else
+                {
+                    Console.WriteLine("Errors occurred creating. Check log file for details");
+                }
+                
                 Console.ReadKey();    
             }
         }
