@@ -1,4 +1,6 @@
-﻿using NLog;
+﻿using GroundRunning.Common;
+using NLog;
+using System;
 using System.IO;
 
 namespace PoshBuildAutomation
@@ -6,20 +8,32 @@ namespace PoshBuildAutomation
     public class PoshBuildCreator
     {
         private Logger _logger;
+        private AutomationResult _result;
 
         public PoshBuildCreator()
         {
             _logger = LogManager.GetCurrentClassLogger();
+            _result = new AutomationResult();
         }
 
-        public void Create(string solutionLocation, string projectName)
+        public AutomationResult Create(string solutionLocation, string projectName)
         {
             _logger.Info("Creating PoshBuild files/folders for {0}", projectName);
-            var resourceDirectory = Directory.GetCurrentDirectory() + @"\Resources\PoshBuild";
-            DirectoryCopy.Copy(resourceDirectory, solutionLocation);
-            
-            UpdateSettingsWithProjectName(solutionLocation, projectName);
 
+            try
+            {
+                var resourceDirectory = Directory.GetCurrentDirectory() + @"\Resources\PoshBuild";
+                DirectoryCopy.Copy(resourceDirectory, solutionLocation);
+
+                UpdateSettingsWithProjectName(solutionLocation, projectName);
+            }
+            catch(Exception ex)
+            {
+                _logger.Error("Error occurred creating PoshBuild files.", ex);
+                _result.AddException(ex);
+            }
+
+            return _result;
         }
 
         private void UpdateSettingsWithProjectName(string solutionLocation, string projectName)

@@ -5,6 +5,7 @@ using NLog;
 using PoshBuildAutomation;
 using StashAutomation;
 using VisualStudioAutomation;
+using GroundRunning.Common;
 
 namespace GroundRunning
 {
@@ -28,6 +29,7 @@ namespace GroundRunning
         private readonly RepositoryCreator _stashRepositoryCreator;
 
         private Logger _logger;
+        private AutomationResult _result;
 
         public Automate()
         {
@@ -36,6 +38,7 @@ namespace GroundRunning
             _stashRepositoryCreator = new RepositoryCreator();
 
             _logger = LogManager.GetCurrentClassLogger();
+            _result = new AutomationResult();
         }
 
         public Automate VisualStudioSolution()
@@ -135,32 +138,38 @@ namespace GroundRunning
             return this;
         }
 
-        public void Create()
+        public AutomationResult Create()
         {
             _logger.Info("Creating with Solution Location {0} and Project Name {1}", _solutionLocation, _projectName);
-
+            
             var repoFolderPath = CreateRepoFolder(_solutionLocation, _projectName);
             var repoName = GetRepoName(_projectName);
 
-            _visualStudioSolutionCreator.Create(repoFolderPath, _projectName, _hasTestProject, _hasNuspec, _projectTemplatePath, _testTemplatePath);
+            _result.AddResult(_visualStudioSolutionCreator.Create(repoFolderPath, _projectName, _hasTestProject, _hasNuspec, _projectTemplatePath, _testTemplatePath));
             
-            if (_hasPoshBuild)
+            if (_result.WasSuccessful && _hasPoshBuild)
             {
-                _poshBuildCreator.Create(repoFolderPath, _projectName);
+                _result.AddResult(_poshBuildCreator.Create(repoFolderPath, _projectName));
             }
 
-            if (_hasStashRepository)
+            if (_result.WasSuccessful && _hasStashRepository)
             {
-                _stashRepositoryCreator.Create(repoName, _stashProjectKey, _stashRepoUrl, _stashBase64Credentials);
-                _stashRepositoryCreator.Publish(repoFolderPath, repoName, _stashProjectKey, _stashPublishUrl);
+                _result.AddResult(_stashRepositoryCreator.Create(repoName, _stashProjectKey, _stashRepoUrl, _stashBase64Credentials));
+                
+                if(_result.WasSuccessful)
+                {
+                    _result.AddResult(_stashRepositoryCreator.Publish(repoFolderPath, repoName, _stashProjectKey, _stashPublishUrl));
+                }
             }
 
             _logger.Info("Finished Creating {0}", _projectName);
+            return _result;
         }
 
-        public async Task CreateAsync()
+        public async Task<AutomationResult> CreateAsync()
         {
-            await Task.Run(() => Create());
+            var result = await Task.Run(() => Create());
+            return result;
         }
 
         private string CreateRepoFolder(string solutionLocation, string projectName)

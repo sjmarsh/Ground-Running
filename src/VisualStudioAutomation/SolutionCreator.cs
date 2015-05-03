@@ -6,21 +6,26 @@ using EnvDTE80;
 using EnvDTE100;
 using VSLangProj;
 using NLog;
+using GroundRunning.Common;
 
 namespace VisualStudioAutomation
 {
     public class SolutionCreator
     {
         private Logger _logger;
+        private AutomationResult _result;
 
         public SolutionCreator()
         {
             _logger = LogManager.GetCurrentClassLogger();
+            _result = new AutomationResult();
         }
 
-        public int Create(string solutionLocation, string projectName, bool hasTestProject, bool hasNuspec, string templatePath = null, string testTemplatePath = null)
+        public AutomationResult Create(string solutionLocation, string projectName, bool hasTestProject, bool hasNuspec, string templatePath = null, string testTemplatePath = null)
         {
-            _logger.Info("Creating Visual Studio Solution for {0}", projectName);        
+            _logger.Info("Creating Visual Studio Solution for {0}", projectName);     
+   
+            // TODO Visual Studio Version Check
             
             var currentDirectory = Directory.GetCurrentDirectory();
             var solutionPath = string.Format(@"{0}\{1}\{2}\", solutionLocation, "src", projectName);
@@ -63,10 +68,10 @@ namespace VisualStudioAutomation
             catch(Exception ex)
             {
                 _logger.Error("Exception Occurred Generating Visual Studio Solution.", ex);
+                _result.AddException(ex);
             }
 
-            return 0;
-            // todo: error handling to return 1 or other codes
+            return _result;
         }
 
         private void CreateTestProject(string solutionLocation, string projectName, string testTemplatePath, string currentDirectory, Solution4 solution)

@@ -6,6 +6,7 @@ using System.Text;
 using Newtonsoft.Json;
 using StashAutomation.Models;
 using NLog;
+using GroundRunning.Common;
 
 namespace StashAutomation
 {
@@ -15,16 +16,18 @@ namespace StashAutomation
         private readonly WebClient _client;
 
         private Logger _logger;
+        private AutomationResult _result;
         
         public RepositoryCreator()
         {
             _client = new WebClient();
 
             _logger = LogManager.GetCurrentClassLogger();
+            _result = new AutomationResult();
         }
 
         // TODO Use oAuth instead of Basic Auth
-        public void Create(string repoName, string stashProjectKey, string stashUrl, string stashBase64Credentials)
+        public AutomationResult Create(string repoName, string stashProjectKey, string stashUrl, string stashBase64Credentials)
         {
             _logger.Info("Creating Stash Repository Named: {0} on Stash Server: {1} using Project Key: {2}", repoName, stashUrl, stashProjectKey);
            
@@ -42,12 +45,13 @@ namespace StashAutomation
             catch (Exception ex)
             {
                 _logger.Error("Error occured creating Stash Repository", ex);
-                // TODO return encapsulated error response object so can display nice message
-                throw;
+                _result.AddException(ex);
             }
+
+            return _result;
         }
        
-        public void Publish(string repoLocation, string repoName, string stashProjectKey, string stashPublishUrl)
+        public AutomationResult Publish(string repoLocation, string repoName, string stashProjectKey, string stashPublishUrl)
         {
             _logger.Info("Publishing Repository from local path {0} to Stash {1}", repoLocation, stashPublishUrl);
 
@@ -79,7 +83,10 @@ namespace StashAutomation
             catch (Exception ex)
             {
                 _logger.Error("Error occured Publishing Repository to Stash.", ex);
+                _result.AddException(ex);
             }
+
+            return _result;
         }
 
         private void AddGitIgnoresToRepo(string repoLocation)
