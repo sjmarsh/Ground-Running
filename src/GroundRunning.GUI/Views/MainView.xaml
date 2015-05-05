@@ -135,7 +135,7 @@
                                     <BulletDecorator.Bullet>
                                         <Ellipse Height="5" Width="5" Fill="Black" Margin="0 5 0 5"/>
                                     </BulletDecorator.Bullet>
-                                    <TextBlock Margin="5 5 0 0" Text="{Binding ., Mode=OneWay}" Background="MistyRose" />
+                                    <TextBlock Margin="5 5 0 0" Text="{Binding ., Mode=OneWay}" Background="MistyRose" TextWrapping="Wrap" />
                                 </BulletDecorator>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
