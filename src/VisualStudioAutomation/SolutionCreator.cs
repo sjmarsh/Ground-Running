@@ -15,6 +15,8 @@ namespace VisualStudioAutomation
         private Logger _logger;
         private AutomationResult _result;
 
+        private const decimal VisualStudio2013 = 12.0m;
+
         public SolutionCreator()
         {
             _logger = LogManager.GetCurrentClassLogger();
@@ -23,10 +25,21 @@ namespace VisualStudioAutomation
 
         public AutomationResult Create(string solutionLocation, string projectName, bool hasTestProject, bool hasNuspec, string templatePath = null, string testTemplatePath = null)
         {
-            _logger.Info("Creating Visual Studio Solution for {0}", projectName);     
-   
-            // TODO Visual Studio Version Check
-            
+            _logger.Info("Creating Visual Studio Solution for {0}", projectName);
+
+            if (IsRunningRequiredVisualStudioVersion(VisualStudio2013))
+            {
+                return CreateSolution(solutionLocation, projectName, hasTestProject, hasNuspec, ref templatePath, testTemplatePath);
+            }
+            else
+            {
+                _result.AddException(new AutomationException("Incorrect version of Visual Studio Installed. Required Version is: {0}", VisualStudio2013));
+                return _result;
+            }
+        }
+        
+        private AutomationResult CreateSolution(string solutionLocation, string projectName, bool hasTestProject, bool hasNuspec, ref string templatePath, string testTemplatePath)
+        {
             var currentDirectory = Directory.GetCurrentDirectory();
             var solutionPath = string.Format(@"{0}\{1}\{2}\", solutionLocation, "src", projectName);
                         
@@ -73,34 +86,72 @@ namespace VisualStudioAutomation
 
             return _result;
         }
+        
+        private bool IsRunningRequiredVisualStudioVersion(decimal requiredVersion)
+        {
+            try
+            {
+                _logger.Info("Detecting Visual Studio Version");
+                var dteType = Type.GetTypeFromProgID("VisualStudio.DTE");
+                var dte = (EnvDTE.DTE)Activator.CreateInstance(dteType, true);
+                var verString = dte.Version;
+                _logger.Info("Version installed: {0}", verString);
+
+                decimal version = 0m;
+                return decimal.TryParse(verString, out version) && (version >= requiredVersion);               
+            }
+            catch(Exception ex)
+            {
+                const string errorMessage = "Error occurred detecting Visual Studio Version.";
+                _logger.Error(errorMessage, ex);
+                throw new AutomationException(errorMessage, ex);
+            }
+        }
 
         private void CreateTestProject(string solutionLocation, string projectName, string testTemplatePath, string currentDirectory, Solution4 solution)
         {
             _logger.Info("Creating Test Project for Solution");
-            if (testTemplatePath == null)
+            try
             {
-                _logger.Info("TestProject Template not specified. Using Default NUnit Test Project.");
-                const string defaultTestTemplatePath = @"\DefaultTemplates\Test\NUnitTestProject\MyTemplate.vstemplate";
-                testTemplatePath = currentDirectory + defaultTestTemplatePath;
+                if (testTemplatePath == null)
+                {
+                    _logger.Info("TestProject Template not specified. Using Default NUnit Test Project.");
+                    const string defaultTestTemplatePath = @"\DefaultTemplates\Test\NUnitTestProject\MyTemplate.vstemplate";
+                    testTemplatePath = currentDirectory + defaultTestTemplatePath;
+                }
+
+                var testProjectName = projectName + ".Test";
+                var testProjectPath = solutionLocation + @"\src\" + testProjectName;
+
+                _logger.Info("Adding the Test Project Named: {0}", testProjectName);
+                // https://msdn.microsoft.com/en-us/library/envdte._solution.addfromtemplate.aspx
+                const bool createNewSolution = false;
+                solution.AddFromTemplate(testTemplatePath, testProjectPath, testProjectName, createNewSolution);
+            }
+            catch(Exception ex)
+            {
+                var errorMessage = string.Format("Error occured creating Test Project for {0}", projectName);
+                _logger.Error(errorMessage);
+                throw new AutomationException(errorMessage, ex);  // TODO: better to use Automation result than raising new errors for messaging.
             }
 
-            var testProjectName = projectName + ".Test";
-            var testProjectPath = solutionLocation + @"\src\" + testProjectName;
-
-            _logger.Info("Adding the Test Project Named: {0}", testProjectName);
-            // https://msdn.microsoft.com/en-us/library/envdte._solution.addfromtemplate.aspx
-            const bool createNewSolution = false;
-            solution.AddFromTemplate(testTemplatePath, testProjectPath, testProjectName, createNewSolution);
-            
-            // Add project reference to the main project
-            // http://stackoverflow.com/questions/11530281/adding-programmatically-in-c-sharp-a-project-reference-as-opposed-to-an-assembl
-            // http://blogs.msdn.com/b/vbteam/archive/2004/07/14/183403.aspx
-            // NOTE: solution.Projects are not zero based!
-            _logger.Info("Adding project reference to Test Project");
-            var proj = solution.Projects.Item(1);
-            var testProj = solution.Projects.Item(2);
-            var vsTestProj = testProj.Object as VSProject;  // This does not like project names with 4 or more dots and ending with .Web (eg. My.New.Project.Web)
-            vsTestProj.References.AddProject(proj);
+            try
+            {
+                // Add project reference to the main project
+                // http://stackoverflow.com/questions/11530281/adding-programmatically-in-c-sharp-a-project-reference-as-opposed-to-an-assembl
+                // http://blogs.msdn.com/b/vbteam/archive/2004/07/14/183403.aspx
+                // NOTE: solution.Projects are not zero based!
+                _logger.Info("Adding project reference to Test Project");
+                var proj = solution.Projects.Item(1);
+                var testProj = solution.Projects.Item(2);
+                var vsTestProj = testProj.Object as VSProject;  // This does not like project names with 4 or more dots and ending with .Web (eg. My.New.Project.Web)
+                vsTestProj.References.AddProject(proj);
+            }
+            catch(Exception ex)
+            {
+                _logger.Warn("Unable to add test project as a reference", ex);
+                // don't throw until known why error occurs with some project names.
+            }
         }
 
         private void CleanUpAdditionalFolders(string solutionLocation)
