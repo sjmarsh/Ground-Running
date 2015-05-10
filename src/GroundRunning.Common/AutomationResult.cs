@@ -17,9 +17,9 @@ namespace GroundRunning.Common
             get { return !Exceptions.Any(); } 
         }
 
-        public bool HadWarnings
+        public bool HasWarnings
         {
-            get { return !Warnings.Any(); }
+            get { return Warnings.Any(); }
         }
 
         public List<Exception> Exceptions { get; private set; }
@@ -42,7 +42,7 @@ namespace GroundRunning.Common
         {
             get 
             {
-                if(HadWarnings)
+                if(HasWarnings)
                 {
                     return Warnings.Select(w => w.Message);
                 }
@@ -53,6 +53,7 @@ namespace GroundRunning.Common
         public void AddResult(AutomationResult result)
         {
             Exceptions.AddRange(result.Exceptions);
+            Warnings.AddRange(result.Warnings);
         }
         
         public void AddException(Exception exception)

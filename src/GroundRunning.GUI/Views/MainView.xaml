@@ -40,6 +40,8 @@
                 <RowDefinition Height="25"></RowDefinition>
                 <RowDefinition Height="25"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="10"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="25"></RowDefinition>
             </Grid.RowDefinitions>
             
@@ -141,6 +143,33 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                     <Label Grid.Row="2" Margin="0 5 0 0" Background="MistyRose">Check Error Log for more details.</Label>
+                </Grid>
+            </Border>
+
+
+            <!-- Warning Notifications TODO: templatize-->
+            <Border Grid.Column="1" Grid.Row="18" BorderBrush="Gold" BorderThickness="1" Grid.ColumnSpan="3"
+                    Visibility="{ Binding HasWarnings, Converter={StaticResource booleanToVisibilityConverter}}">
+                <Grid Grid.Column="1" Grid.Row="16" Background="LemonChiffon" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="35"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Background="Gold" Foreground="White" FontWeight="Bold">Warnings</Label>
+                    <ItemsControl Grid.Row="1" x:Name="Warnings" Background="LemonChiffon">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <BulletDecorator Margin="5 5 0 0">
+                                    <BulletDecorator.Bullet>
+                                        <Ellipse Height="5" Width="5" Fill="Black" Margin="0 5 0 5"/>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Margin="5 5 0 0" Text="{Binding ., Mode=OneWay}" Background="LemonChiffon" TextWrapping="Wrap" />
+                                </BulletDecorator>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Label Grid.Row="2" Margin="0 5 0 0" Background="LemonChiffon">Check Error Log for more details.</Label>
                 </Grid>
             </Border>
 

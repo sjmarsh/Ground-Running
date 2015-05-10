@@ -38,6 +38,7 @@ namespace GroundRunning.GUI.ViewModels
 
             IsCreating = false;
             Errors = new BindableCollection<string>();
+            Warnings = new BindableCollection<string>();
         }
 
         public ObservableCollection<string> ProjectTemplates { get; set; }
@@ -154,6 +155,18 @@ namespace GroundRunning.GUI.ViewModels
             }
         }
 
+        private bool HasValidStashDetails()
+        {
+            return (!HasStashRepository ||
+                   (HasStashRepository &&
+                        !string.IsNullOrEmpty(StashProjectKey) &&
+                        !string.IsNullOrEmpty(StashRepoUrl) &&
+                        !string.IsNullOrEmpty(StashPublishUrl) &&
+                        !string.IsNullOrEmpty(StashUserName) &&
+                        !string.IsNullOrEmpty(StashPassword)
+                   ));
+        }
+        
         #endregion
 
         private bool _isCreating;
@@ -193,18 +206,18 @@ namespace GroundRunning.GUI.ViewModels
             get { return Errors.Any(); }
         }
 
-        private bool HasValidStashDetails()
+        private BindableCollection<string> _warnings;
+        public BindableCollection<string> Warnings
         {
-            return (!HasStashRepository ||
-                   (HasStashRepository && 
-                        !string.IsNullOrEmpty(StashProjectKey) &&
-                        !string.IsNullOrEmpty(StashRepoUrl) &&
-                        !string.IsNullOrEmpty(StashPublishUrl) &&
-                        !string.IsNullOrEmpty(StashUserName) &&
-                        !string.IsNullOrEmpty(StashPassword) 
-                   ));
+            get { return _warnings; }
+            set { _warnings = value; }
         }
 
+        public bool HasWarnings
+        {
+            get { return Warnings.Any(); }
+        }
+        
         public async void Create()
         {
             Errors.Clear();
@@ -234,6 +247,12 @@ namespace GroundRunning.GUI.ViewModels
             {
                 Errors.AddRange(result.ErrorMessages);
                 NotifyOfPropertyChange(() => HasErrors);
+            }
+
+            if(result.HasWarnings)
+            {
+                Warnings.AddRange(result.WarningMessages);
+                NotifyOfPropertyChange(() => HasWarnings);
             }
         }
 
