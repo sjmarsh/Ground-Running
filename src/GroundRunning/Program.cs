@@ -7,6 +7,8 @@ namespace GroundRunning
     {
         public static void Main(string[] args)
         {
+            // TODO: Lots more work to make the console app more usable.
+
             // defaults 
             string defaultProjectName = ConfigurationManager.AppSettings["DefaultProjectName"];
             string defaultProjectLocation = ConfigurationManager.AppSettings["DefaultProjectLocation"];

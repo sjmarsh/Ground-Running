@@ -8,10 +8,6 @@ namespace GroundRunning.Common
 {
     public class AutomationException : Exception
     {
-        private string p;
-        private decimal requiredVersion;
-
-
         public AutomationException()
         {
         }

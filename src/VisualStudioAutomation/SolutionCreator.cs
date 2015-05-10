@@ -111,6 +111,7 @@ namespace VisualStudioAutomation
         private void CreateTestProject(string solutionLocation, string projectName, string testTemplatePath, string currentDirectory, Solution4 solution)
         {
             _logger.Info("Creating Test Project for Solution");
+            
             try
             {
                 if (testTemplatePath == null)
@@ -132,46 +133,63 @@ namespace VisualStudioAutomation
             {
                 var errorMessage = string.Format("Error occured creating Test Project for {0}", projectName);
                 _logger.Error(errorMessage);
-                throw new AutomationException(errorMessage, ex);  // TODO: better to use Automation result than raising new errors for messaging.
+                _result.AddException(errorMessage, ex);
             }
 
+            AddTestProjectReference(solution);           
+        }
+
+        private void AddTestProjectReference(Solution4 solution)
+        {
+            _logger.Info("Adding project reference to Test Project");
+            
             try
             {
                 // Add project reference to the main project
                 // http://stackoverflow.com/questions/11530281/adding-programmatically-in-c-sharp-a-project-reference-as-opposed-to-an-assembl
                 // http://blogs.msdn.com/b/vbteam/archive/2004/07/14/183403.aspx
                 // NOTE: solution.Projects are not zero based!
-                _logger.Info("Adding project reference to Test Project");
                 var proj = solution.Projects.Item(1);
                 var testProj = solution.Projects.Item(2);
                 var vsTestProj = testProj.Object as VSProject;  // This does not like project names with 4 or more dots and ending with .Web (eg. My.New.Project.Web)
                 vsTestProj.References.AddProject(proj);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                _logger.Warn("Unable to add test project as a reference", ex);
-                // don't throw until known why error occurs with some project names.
+                // don't log exception until known why error occurs with some project names.
+                const string message = "Unable to add test project as a reference";
+                _logger.Warn(message, ex);
+                _result.AddWarning(message, ex);
             }
         }
 
         private void CleanUpAdditionalFolders(string solutionLocation)
         {
-            // Calling this library from an external program creates an additional folder for some reason. 
-            // This is a Work-around to clean up the folders if they exist
-            _logger.Info("Cleaning up additional folders created during the process");
-            var rootDir = solutionLocation + @"\..\..\";
-            var repoName = solutionLocation.Substring(solutionLocation.LastIndexOf("\\"));
-            var folderToRemove = rootDir + "\\" + repoName;
-            var testFolderToRemove = folderToRemove + ".Test";
-            
-            if(Directory.Exists(folderToRemove))
+            try
             {
-                Directory.Delete(folderToRemove, true);
-            }
+                // Calling this library from an external program creates an additional folder for some reason. 
+                // This is a Work-around to clean up the folders if they exist
+                _logger.Info("Cleaning up additional folders created during the process");
+                var rootDir = solutionLocation + @"\..\..\";
+                var repoName = solutionLocation.Substring(solutionLocation.LastIndexOf("\\"));
+                var folderToRemove = rootDir + "\\" + repoName;
+                var testFolderToRemove = folderToRemove + ".Test";
 
-            if(Directory.Exists(testFolderToRemove))
+                if (Directory.Exists(folderToRemove))
+                {
+                    Directory.Delete(folderToRemove, true);
+                }
+
+                if (Directory.Exists(testFolderToRemove))
+                {
+                    Directory.Delete(testFolderToRemove, true);
+                }
+            }
+            catch(Exception ex)
             {
-                Directory.Delete(testFolderToRemove, true);
+                const string message = "Error occurred cleaning up additional folders";
+                _logger.Warn(message, ex);
+                _result.AddWarning(message, ex);
             }
         }
 
@@ -183,20 +201,29 @@ namespace VisualStudioAutomation
             if(projectName.Contains("."))
             {
                 _logger.Info("Correcting Solution File Name because it contains one or more dots.");
-                var directoryInfo = new DirectoryInfo(solutionLocation + @"\src\");
-                var directoryFiles = directoryInfo.GetFiles().ToList(); 
-                var solutionFile = directoryFiles.FirstOrDefault(f => f.Extension == ".sln");
-                var properSolutionName = directoryInfo.FullName + projectName + ".sln";
-                if(solutionFile != null)
+                try
                 {
-                    File.Move(solutionFile.FullName, properSolutionName);
+                    var directoryInfo = new DirectoryInfo(solutionLocation + @"\src\");
+                    var directoryFiles = directoryInfo.GetFiles().ToList();
+                    var solutionFile = directoryFiles.FirstOrDefault(f => f.Extension == ".sln");
+                    var properSolutionName = directoryInfo.FullName + projectName + ".sln";
+                    if (solutionFile != null)
+                    {
+                        File.Move(solutionFile.FullName, properSolutionName);
+                    }
+
+                    // also drop the .suo file (it will be re-generated by vs next time the solution is opened)
+                    var suoFile = directoryInfo.GetFiles().ToList().FirstOrDefault(f => f.Extension == ".suo");
+                    if (suoFile != null)
+                    {
+                        File.Delete(suoFile.FullName);
+                    }
                 }
-                
-                // also drop the .suo file (it will be re-generated by vs next time the solution is opened)
-                var suoFile = directoryInfo.GetFiles().ToList().FirstOrDefault(f => f.Extension == ".suo");
-                if(suoFile != null)
+                catch(Exception ex)
                 {
-                    File.Delete(suoFile.FullName);
+                    const string message = "Error occurred correcting the solution name";
+                    _logger.Warn(message, ex);
+                    _result.AddWarning(message, ex);
                 }
             }
         }
