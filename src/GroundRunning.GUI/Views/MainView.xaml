@@ -11,7 +11,8 @@
         Width="600"
         >
     <Window.Resources>
-        <converters:BooleanToVisabilityConverter x:Key="booleanToVisibilityConverter"/>
+        <converters:BooleanToVisabilityConverter x:Key="booleanToVisibilityConverterFalseToHidden" Invert="False"/>
+        <converters:BooleanToVisabilityConverter x:Key="booleanToVisibilityConverterTrueToHidden" Invert="True"/>
     </Window.Resources> 
     <Grid>      
         <Grid>
@@ -54,7 +55,6 @@
             <Label Grid.Column="1" Grid.Row="4" HorizontalAlignment="Right">Project Template:</Label>
             <ComboBox x:Name="ProjectTemplates" Grid.Column="3" Grid.Row="4" HorizontalAlignment="Stretch" ItemsSource="{Binding Path=ProjectTemplates, Mode=OneWay}" SelectedValue="{Binding Path=ProjectTemplate}"></ComboBox>
 
-
             <Label Grid.Column="1" Grid.Row="5" HorizontalAlignment="Right">Add Test Project?</Label>
             <CheckBox x:Name="HasTestProject" Grid.Column="3" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center"></CheckBox>
             
@@ -72,8 +72,8 @@
                     <ColumnDefinition Width="70*"/>
                 </Grid.ColumnDefinitions>
                 <CheckBox Grid.Column="0" x:Name="HasStashRepository"  HorizontalAlignment="Left" VerticalAlignment="Center"></CheckBox>
-                <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="1">Stash Repo Url:</Label>
-                <TextBox x:Name="StashRepoUrl" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="2"></TextBox>
+                <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}" Grid.Column="1">Stash Repo Url:</Label>
+                <TextBox x:Name="StashRepoUrl" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}" Grid.Column="2"></TextBox>
             </Grid>
             <Grid Grid.Column="3" Grid.Row="9">
                 <Grid.ColumnDefinitions>
@@ -81,8 +81,8 @@
                     <ColumnDefinition Width="30*"/>
                     <ColumnDefinition Width="70*"/>
                 </Grid.ColumnDefinitions>
-                <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="1">Stash Publish Url:</Label>
-                <TextBox x:Name="StashPublishUrl" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="2"></TextBox>
+                <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}" Grid.Column="1">Stash Publish Url:</Label>
+                <TextBox x:Name="StashPublishUrl" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}" Grid.Column="2"></TextBox>
             </Grid>
             <Grid Grid.Column="3" Grid.Row="10">
                 <Grid.ColumnDefinitions>
@@ -90,8 +90,8 @@
                     <ColumnDefinition Width="30*"/>
                     <ColumnDefinition Width="70*"/>
                 </Grid.ColumnDefinitions>
-                <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="1">Project Key:</Label>
-                <TextBox x:Name="StashProjectKey" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="2"></TextBox>
+                <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}" Grid.Column="1">Project Key:</Label>
+                <TextBox x:Name="StashProjectKey" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}" Grid.Column="2"></TextBox>
             </Grid>
             <Grid Grid.Column="3" Grid.Row="11">
                 <Grid.ColumnDefinitions>
@@ -99,8 +99,8 @@
                     <ColumnDefinition Width="30*"/>
                     <ColumnDefinition Width="70*"/>
                 </Grid.ColumnDefinitions>
-                <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="1">User Name:</Label>
-                <TextBox x:Name="StashUserName" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="2"></TextBox>
+                <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}" Grid.Column="1">User Name:</Label>
+                <TextBox x:Name="StashUserName" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}" Grid.Column="2"></TextBox>
             </Grid>
             <Grid Grid.Column="3" Grid.Row="12">
                 <Grid.ColumnDefinitions>
@@ -108,21 +108,30 @@
                     <ColumnDefinition Width="30*"/>
                     <ColumnDefinition Width="70*"/>
                 </Grid.ColumnDefinitions>
-                <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="1">Password:</Label>
-                <PasswordBox x:Name="StashPassword" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="2" 
+                <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}" Grid.Column="1">Password:</Label>
+                <PasswordBox x:Name="StashPassword" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}" Grid.Column="2" 
                              extensions:BindablePasswordBox.BindPassword="True" extensions:BindablePasswordBox.BoundPassword="{Binding StashPassword, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
             
             <StackPanel Grid.Column="3" Grid.Row="14" HorizontalAlignment="Right" FlowDirection="LeftToRight" Orientation="Horizontal">
                 <Button x:Name="Create" Width="80">Create</Button>
-                <Viewbox Width="25" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{ Binding IsCreating, Converter={StaticResource booleanToVisibilityConverter}}">
+                <Viewbox Width="25" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{ Binding IsCreating, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}">
                     <userControls:ProgressSpinner />
                 </Viewbox>                
             </StackPanel>
+
+            <!--Success Message-->
+            <Border Grid.Column="1" Grid.Row="16" BorderBrush="Green" BorderThickness="1" Grid.ColumnSpan="3"
+                    Visibility="{ Binding WasSuccessful, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}">
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Label Foreground="Green" FontWeight="Bold">Done!</Label>
+                    <Image Source="..\Resources\Tick.ico" Height="20" Width="20"></Image>
+                </StackPanel>
+            </Border>
             
             <!-- Error Notifications TODO: templatize-->
             <Border Grid.Column="1" Grid.Row="16" BorderBrush="Red" BorderThickness="1" Grid.ColumnSpan="3"
-                    Visibility="{ Binding HasErrors, Converter={StaticResource booleanToVisibilityConverter}}">
+                    Visibility="{ Binding HasErrors, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}">
                 <Grid Grid.Column="1" Grid.Row="16" Background="MistyRose" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="25"/>
@@ -149,7 +158,7 @@
 
             <!-- Warning Notifications TODO: templatize-->
             <Border Grid.Column="1" Grid.Row="18" BorderBrush="Gold" BorderThickness="1" Grid.ColumnSpan="3"
-                    Visibility="{ Binding HasWarnings, Converter={StaticResource booleanToVisibilityConverter}}">
+                    Visibility="{ Binding HasWarnings, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}">
                 <Grid Grid.Column="1" Grid.Row="16" Background="LemonChiffon" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="25"/>

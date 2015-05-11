@@ -37,6 +37,7 @@ namespace GroundRunning.GUI.ViewModels
             StashPublishUrl = ConfigurationManager.AppSettings["StashPublishUrl"];
 
             IsCreating = false;
+            WasSuccessful = false;
             Errors = new BindableCollection<string>();
             Warnings = new BindableCollection<string>();
         }
@@ -217,10 +218,25 @@ namespace GroundRunning.GUI.ViewModels
         {
             get { return Warnings.Any(); }
         }
+
+        private bool _wasSuccessful;
+        public bool WasSuccessful 
+        {
+            get 
+            { 
+                return _wasSuccessful; 
+            }
+            set 
+            {
+                _wasSuccessful = value;
+                NotifyOfPropertyChange(() => WasSuccessful);
+            }
+        }
         
         public async void Create()
         {
             Errors.Clear();
+            WasSuccessful = false;
             NotifyOfPropertyChange(() => HasErrors);
 
             var automate = new Automate();
@@ -247,6 +263,10 @@ namespace GroundRunning.GUI.ViewModels
             {
                 Errors.AddRange(result.ErrorMessages);
                 NotifyOfPropertyChange(() => HasErrors);
+            }
+            else
+            {
+                WasSuccessful = true;
             }
 
             if(result.HasWarnings)
