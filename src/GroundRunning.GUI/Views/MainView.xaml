@@ -50,8 +50,17 @@
             <TextBox x:Name="ProjectName" Grid.Column="3" Grid.Row="1" Margin="0 0 0 2" HorizontalAlignment="Stretch"></TextBox>
 
             <Label Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right">Project Location/Path:</Label>
-            <TextBox x:Name="ProjectLocation" Grid.Column="3" Grid.Row="2" Margin="0 2 0 0" HorizontalAlignment="Stretch"></TextBox>
-            
+            <Grid Grid.Column="3" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="85*"/>
+                    <ColumnDefinition Width="15*"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="ProjectLocation" Grid.Column="0" Grid.Row="0" Margin="0 2 0 0" HorizontalAlignment="Stretch"></TextBox>
+                <Button x:Name="BrowseProjectLocation" Grid.Column="1" Grid.Row="0" Margin="10 0 10 0">
+                    <Image Source="..\Resources\OpenFolder.ico" Height="20" Width="20" ToolTip="Browse"></Image>
+                </Button>
+                
+            </Grid>
             <Label Grid.Column="1" Grid.Row="4" HorizontalAlignment="Right">Project Template:</Label>
             <ComboBox x:Name="ProjectTemplates" Grid.Column="3" Grid.Row="4" HorizontalAlignment="Stretch" ItemsSource="{Binding Path=ProjectTemplates, Mode=OneWay}" SelectedValue="{Binding Path=ProjectTemplate}"></ComboBox>
 

@@ -7,6 +7,7 @@ using Caliburn.Micro;
 using System.Configuration;
 using System.Collections.Generic;
 using GroundRunning.Common;
+using GroundRunning.GUI.Services;
 
 namespace GroundRunning.GUI.ViewModels
 {
@@ -72,6 +73,13 @@ namespace GroundRunning.GUI.ViewModels
                 NotifyOfPropertyChange(() => ProjectLocation);
                 NotifyOfPropertyChange(() => CanCreate);
             }
+        }
+
+        public void BrowseProjectLocation()
+        {
+            var folderBrowserServer = new FolderBrowserService(); // todo inject
+            folderBrowserServer.ShowDialog();
+            ProjectLocation = folderBrowserServer.FolderPath;
         }
 
         public string ProjectTemplate { get; set; }        
