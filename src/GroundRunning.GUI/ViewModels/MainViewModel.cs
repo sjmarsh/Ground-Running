@@ -13,8 +13,17 @@ namespace GroundRunning.GUI.ViewModels
 {
     public class MainViewModel : PropertyChangedBase
     {
+        private const string BrowseOtherTemplates = "Browse Other Templates...";
+        private string DefaultProjectTemplate = ConfigurationManager.AppSettings["DefaultProjectTemplate"];
+        private string DefaultProjectTemplatePath = ConfigurationManager.AppSettings["DefaultProjectTemplatePath"];
+        private const string VisualStudioTemplateFilter = "Project Templates (*.vstemplate)|*.vstemplate";
+        private FolderBrowserService _folderBrowserService;
+        private OpenFileDialogService _openFileDialogService;
+
         public MainViewModel()
         {
+           _folderBrowserService = new FolderBrowserService(); // todo inject
+           _openFileDialogService = new OpenFileDialogService(); // todo inject
            InitializeDefaults();
         }
 
@@ -23,11 +32,14 @@ namespace GroundRunning.GUI.ViewModels
             ProjectName = ConfigurationManager.AppSettings["DefaultProjectName"];
             ProjectLocation = ConfigurationManager.AppSettings["DefaultProjectLocation"];
 
-            ProjectTemplates = new ObservableCollection<string> { ConfigurationManager.AppSettings["DefaultProjectTemplate"] };
+            ProjectTemplates = new ObservableCollection<string> 
+            { 
+                DefaultProjectTemplate,
+                BrowseOtherTemplates
+            };
             ProjectTemplate = ProjectTemplates.FirstOrDefault();
-
-            ProjectName = ConfigurationManager.AppSettings["DefaultProjectName"];
-            ProjectLocation = ConfigurationManager.AppSettings["DefaultProjectLocation"];
+            ProjectTemplatePath = DefaultProjectTemplatePath;
+            VisualStudioTemplateDirectory = ConfigurationManager.AppSettings["VisualStudioTemplateDirectory"];
 
             HasTestProject = true;
             HasNuspec = true;
@@ -42,8 +54,6 @@ namespace GroundRunning.GUI.ViewModels
             Errors = new BindableCollection<string>();
             Warnings = new BindableCollection<string>();
         }
-
-        public ObservableCollection<string> ProjectTemplates { get; set; }
 
         private string _projectName;
         public string ProjectName 
@@ -77,12 +87,64 @@ namespace GroundRunning.GUI.ViewModels
 
         public void BrowseProjectLocation()
         {
-            var folderBrowserServer = new FolderBrowserService(); // todo inject
-            folderBrowserServer.ShowDialog();
-            ProjectLocation = folderBrowserServer.FolderPath;
+            _folderBrowserService.ShowDialog();
+            ProjectLocation = _folderBrowserService.FolderPath;
         }
 
-        public string ProjectTemplate { get; set; }        
+        public ObservableCollection<string> ProjectTemplates { get; set; }
+
+        private string _projectTemplate;
+        public string ProjectTemplate 
+        {
+            get
+            { 
+                return _projectTemplate; 
+            }
+            set
+            {
+                _projectTemplate = value;
+
+                if (value == DefaultProjectTemplate)
+                {
+                    ProjectTemplatePath = DefaultProjectTemplatePath;
+                }
+
+                NotifyOfPropertyChange(() => ProjectTemplate);
+                NotifyOfPropertyChange(() => IsBrowsingVisualStudioTemplates);
+            }
+        }
+
+        public bool IsBrowsingVisualStudioTemplates
+        {
+            get
+            {
+                return ProjectTemplate == BrowseOtherTemplates;
+            }
+        }
+
+        private string _projectTemplatePath;
+        public string ProjectTemplatePath 
+        {
+            get
+            {
+                return _projectTemplatePath;
+            }
+            set
+            {
+                _projectTemplatePath = value;
+                NotifyOfPropertyChange(() => ProjectTemplatePath);
+                NotifyOfPropertyChange(() => CanCreate);
+            }
+        }
+
+        public string VisualStudioTemplateDirectory { get; set; }
+
+        public void BrowseProjectTemplates()
+        {
+            _openFileDialogService.ShowDialog(VisualStudioTemplateFilter, VisualStudioTemplateDirectory); 
+            ProjectTemplatePath = _openFileDialogService.FilePath;
+        }
+
         public bool HasTestProject { get; set; }
         public bool HasNuspec { get; set; }
         public bool HasPoshBuild { get; set; }
@@ -198,6 +260,7 @@ namespace GroundRunning.GUI.ViewModels
             { 
                 return !string.IsNullOrEmpty(ProjectName) 
                     && !string.IsNullOrEmpty(ProjectLocation)
+                    && !string.IsNullOrEmpty(ProjectTemplatePath)
                     && HasValidStashDetails()
                     && !IsCreating;
             } 
@@ -244,14 +307,17 @@ namespace GroundRunning.GUI.ViewModels
         public async void Create()
         {
             Errors.Clear();
+            Warnings.Clear();
             WasSuccessful = false;
             NotifyOfPropertyChange(() => HasErrors);
+            NotifyOfPropertyChange(() => HasWarnings);
 
             var automate = new Automate();
                         
             automate.VisualStudioSolution()
                    .With().ProjectName(ProjectName)
                    .And().SolutionLocation(ProjectLocation)
+                   .Using().ProjectTemplatePath(ProjectTemplatePath)
             .Include().TestProject(HasTestProject)
             .Include().Nuspec(HasNuspec)
             .Include().PoshBuild(HasPoshBuild)
@@ -288,6 +354,6 @@ namespace GroundRunning.GUI.ViewModels
         {
             const string credentialFormat = "{0}:{1}";
             return Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format(credentialFormat, StashUserName, StashPassword)));
-        }
+        }        
     }
 }

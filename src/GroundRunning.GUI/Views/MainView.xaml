@@ -40,6 +40,7 @@
                 <RowDefinition Height="25"></RowDefinition>
                 <RowDefinition Height="25"></RowDefinition>
                 <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="10"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -59,22 +60,32 @@
                 <Button x:Name="BrowseProjectLocation" Grid.Column="1" Grid.Row="0" Margin="10 0 10 0">
                     <Image Source="..\Resources\OpenFolder.ico" Height="20" Width="20" ToolTip="Browse"></Image>
                 </Button>
-                
             </Grid>
             <Label Grid.Column="1" Grid.Row="4" HorizontalAlignment="Right">Project Template:</Label>
             <ComboBox x:Name="ProjectTemplates" Grid.Column="3" Grid.Row="4" HorizontalAlignment="Stretch" ItemsSource="{Binding Path=ProjectTemplates, Mode=OneWay}" SelectedValue="{Binding Path=ProjectTemplate}"></ComboBox>
 
-            <Label Grid.Column="1" Grid.Row="5" HorizontalAlignment="Right">Add Test Project?</Label>
-            <CheckBox x:Name="HasTestProject" Grid.Column="3" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center"></CheckBox>
+            <Grid Grid.Column="3" Grid.Row="5" Visibility="{ Binding IsBrowsingVisualStudioTemplates, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="85*"/>
+                    <ColumnDefinition Width="15*"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="ProjectTemplatePath" Grid.Column="0" Grid.Row="0" Margin="0 2 0 0" HorizontalAlignment="Stretch"></TextBox>
+                <Button x:Name="BrowseProjectTemplates" Grid.Column="1" Grid.Row="0" Margin="10 0 10 0">
+                    <Image Source="..\Resources\OpenFolder.ico" Height="20" Width="20" ToolTip="Browse"></Image>
+                </Button>
+            </Grid>
+
+            <Label Grid.Column="1" Grid.Row="6" HorizontalAlignment="Right">Add Test Project?</Label>
+            <CheckBox x:Name="HasTestProject" Grid.Column="3" Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Center"></CheckBox>
             
-            <Label Grid.Column="1" Grid.Row="6" HorizontalAlignment="Right">Add Nuspec?</Label>
-            <CheckBox x:Name="HasNuspec" Grid.Column="3" Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Center"></CheckBox>
+            <Label Grid.Column="1" Grid.Row="7" HorizontalAlignment="Right">Add Nuspec?</Label>
+            <CheckBox x:Name="HasNuspec" Grid.Column="3" Grid.Row="7" HorizontalAlignment="Left" VerticalAlignment="Center"></CheckBox>
             
-            <Label Grid.Column="1" Grid.Row="7" HorizontalAlignment="Right">Add PoshBuild?</Label>
-            <CheckBox x:Name="HasPoshBuild" Grid.Column="3" Grid.Row="7" HorizontalAlignment="Left" VerticalAlignment="Center"></CheckBox>
+            <Label Grid.Column="1" Grid.Row="8" HorizontalAlignment="Right">Add PoshBuild?</Label>
+            <CheckBox x:Name="HasPoshBuild" Grid.Column="3" Grid.Row="8" HorizontalAlignment="Left" VerticalAlignment="Center"></CheckBox>
             
-            <Label Grid.Column="1" Grid.Row="8" HorizontalAlignment="Right">Create Stash Repository?</Label>
-            <Grid Grid.Column="3" Grid.Row="8">
+            <Label Grid.Column="1" Grid.Row="9" HorizontalAlignment="Right">Create Stash Repository?</Label>
+            <Grid Grid.Column="3" Grid.Row="9">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*"/>
                     <ColumnDefinition Width="30*"/>
@@ -84,7 +95,7 @@
                 <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}" Grid.Column="1">Stash Repo Url:</Label>
                 <TextBox x:Name="StashRepoUrl" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}" Grid.Column="2"></TextBox>
             </Grid>
-            <Grid Grid.Column="3" Grid.Row="9">
+            <Grid Grid.Column="3" Grid.Row="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*"/>
                     <ColumnDefinition Width="30*"/>
@@ -93,7 +104,7 @@
                 <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}" Grid.Column="1">Stash Publish Url:</Label>
                 <TextBox x:Name="StashPublishUrl" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}" Grid.Column="2"></TextBox>
             </Grid>
-            <Grid Grid.Column="3" Grid.Row="10">
+            <Grid Grid.Column="3" Grid.Row="11">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*"/>
                     <ColumnDefinition Width="30*"/>
@@ -102,7 +113,7 @@
                 <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}" Grid.Column="1">Project Key:</Label>
                 <TextBox x:Name="StashProjectKey" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}" Grid.Column="2"></TextBox>
             </Grid>
-            <Grid Grid.Column="3" Grid.Row="11">
+            <Grid Grid.Column="3" Grid.Row="12">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*"/>
                     <ColumnDefinition Width="30*"/>
@@ -111,7 +122,7 @@
                 <Label Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}" Grid.Column="1">User Name:</Label>
                 <TextBox x:Name="StashUserName" Visibility="{ Binding HasStashRepository, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}" Grid.Column="2"></TextBox>
             </Grid>
-            <Grid Grid.Column="3" Grid.Row="12">
+            <Grid Grid.Column="3" Grid.Row="13">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*"/>
                     <ColumnDefinition Width="30*"/>
@@ -122,7 +133,7 @@
                              extensions:BindablePasswordBox.BindPassword="True" extensions:BindablePasswordBox.BoundPassword="{Binding StashPassword, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
             
-            <StackPanel Grid.Column="3" Grid.Row="14" HorizontalAlignment="Right" FlowDirection="LeftToRight" Orientation="Horizontal">
+            <StackPanel Grid.Column="3" Grid.Row="15" HorizontalAlignment="Right" FlowDirection="LeftToRight" Orientation="Horizontal">
                 <Button x:Name="Create" Width="80">Create</Button>
                 <Viewbox Width="25" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{ Binding IsCreating, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}">
                     <userControls:ProgressSpinner />
@@ -130,7 +141,7 @@
             </StackPanel>
 
             <!--Success Message-->
-            <Border Grid.Column="1" Grid.Row="16" BorderBrush="Green" BorderThickness="1" Grid.ColumnSpan="3"
+            <Border Grid.Column="1" Grid.Row="17" BorderBrush="Green" BorderThickness="1" Grid.ColumnSpan="3"
                     Visibility="{ Binding WasSuccessful, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}">
                 <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Label Foreground="Green" FontWeight="Bold">Done!</Label>
@@ -139,7 +150,7 @@
             </Border>
             
             <!-- Error Notifications TODO: templatize-->
-            <Border Grid.Column="1" Grid.Row="16" BorderBrush="Red" BorderThickness="1" Grid.ColumnSpan="3"
+            <Border Grid.Column="1" Grid.Row="17" BorderBrush="Red" BorderThickness="1" Grid.ColumnSpan="3"
                     Visibility="{ Binding HasErrors, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}">
                 <Grid Grid.Column="1" Grid.Row="16" Background="MistyRose" >
                     <Grid.RowDefinitions>
@@ -166,9 +177,9 @@
 
 
             <!-- Warning Notifications TODO: templatize-->
-            <Border Grid.Column="1" Grid.Row="18" BorderBrush="Gold" BorderThickness="1" Grid.ColumnSpan="3"
+            <Border Grid.Column="1" Grid.Row="19" BorderBrush="Gold" BorderThickness="1" Grid.ColumnSpan="3"
                     Visibility="{ Binding HasWarnings, Converter={StaticResource booleanToVisibilityConverterFalseToHidden}}">
-                <Grid Grid.Column="1" Grid.Row="16" Background="LemonChiffon" >
+                <Grid Grid.Column="1" Grid.Row="17" Background="LemonChiffon" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="25"/>
                         <RowDefinition Height="*"/>

@@ -83,6 +83,7 @@
     <Compile Include="Converters\BooleanToVisabilityConverter.cs" />
     <Compile Include="Extensions\BindablePasswordBox.cs" />
     <Compile Include="Services\FolderBrowserService.cs" />
+    <Compile Include="Services\OpenFileDialogService.cs" />
     <Compile Include="UserControls\ProgressSpinner.xaml.cs">
       <DependentUpon>ProgressSpinner.xaml</DependentUpon>
     </Compile>
