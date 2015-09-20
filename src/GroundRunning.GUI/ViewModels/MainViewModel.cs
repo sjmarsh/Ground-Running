@@ -8,6 +8,7 @@ using System.Configuration;
 using System.Collections.Generic;
 using GroundRunning.Common;
 using GroundRunning.GUI.Services;
+using System.IO;
 
 namespace GroundRunning.GUI.ViewModels
 {
@@ -15,7 +16,7 @@ namespace GroundRunning.GUI.ViewModels
     {
         private const string BrowseOtherTemplates = "Browse Other Templates...";
         private string DefaultProjectTemplate = ConfigurationManager.AppSettings["DefaultProjectTemplate"];
-        private string DefaultProjectTemplatePath = ConfigurationManager.AppSettings["DefaultProjectTemplatePath"];
+        private string DefaultProjectTemplatePath = Directory.GetCurrentDirectory() + ConfigurationManager.AppSettings["DefaultProjectTemplatePath"];
         private const string VisualStudioTemplateFilter = "Project Templates (*.vstemplate)|*.vstemplate";
         private FolderBrowserService _folderBrowserService;
         private OpenFileDialogService _openFileDialogService;

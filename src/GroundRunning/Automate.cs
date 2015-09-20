@@ -168,6 +168,8 @@ namespace GroundRunning
             {
                 _logger.Error(string.Format("Error occured Creating Solution {0}", _projectName), ex);
                 _result.AddException(ex);
+
+                // TODO: CLEAN UP CREATED FOLDERS/FILES
             }
 
             _logger.Info("Finished Creating {0}", _projectName);
