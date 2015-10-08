@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+  <Metadata>
+    <Identity Id="MVCWebProjectTemplate.Custom" Version="1.3" Language="en-US" Publisher="sjmarsh" />
+    <DisplayName>MVCWebProjectTemplate</DisplayName>
+    <Description xml:space="preserve">Create a new MVC Web Project without the Microsoft defaults.</Description>
+    <Icon>__TemplateIcon.png</Icon>
+  </Metadata>
+  <Installation>
+    <InstallationTarget Version="[12.0,13.0)" Id="Microsoft.VisualStudio.Premium" />
+    <InstallationTarget Version="[12.0,13.0)" Id="Microsoft.VisualStudio.Pro" />
+    <InstallationTarget Version="[12.0,13.0)" Id="Microsoft.VisualStudio.Ultimate" />
+  </Installation>
+  <Dependencies>
+    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+    <Dependency d:Source="Installed" Id="NuGet.67e54e40-0ae3-42c5-a949-fddf5739e6a5" DisplayName="NuGet Package Manager for Visual Studio 2013" Version="[2.8.60723.765,3.0)" />
+  </Dependencies>
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="File" Path="ProjectTemplates\" d:TargetPath="ProjectTemplates\CSharp\Web\MVCWebApplicationTemplate.zip" />
+  </Assets>
+</PackageManifest>
